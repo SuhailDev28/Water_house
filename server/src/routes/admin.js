@@ -1,0 +1,14 @@
+import {Router} from 'express';import {requireAdmin} from '../middleware/auth.js';import MenuItem from '../models/MenuItem.js';import Page from '../models/Page.js';import SiteSetting from '../models/SiteSetting.js';import ContentCollection from '../models/ContentCollection.js';const r=Router();r.use(requireAdmin);
+r.get('/menu',async(req,res)=>res.json(await MenuItem.find().sort({sortOrder:1,createdAt:-1})));
+r.post('/menu',async(req,res)=>res.status(201).json(await MenuItem.create(req.body)));
+r.put('/menu/:id',async(req,res)=>res.json(await MenuItem.findByIdAndUpdate(req.params.id,req.body,{new:true})));
+r.delete('/menu/:id',async(req,res)=>{await MenuItem.findByIdAndDelete(req.params.id);res.status(204).end()});
+r.get('/pages',async(req,res)=>res.json(await Page.find().sort({slug:1})));
+r.put('/pages/:slug',async(req,res)=>res.json(await Page.findOneAndUpdate({slug:req.params.slug},{...req.body,slug:req.params.slug},{new:true,upsert:true})));
+r.get('/collections/:type',async(req,res)=>res.json(await ContentCollection.find({type:req.params.type}).sort({sortOrder:1,name:1})));
+r.post('/collections/:type',async(req,res)=>res.status(201).json(await ContentCollection.create({...req.body,type:req.params.type})));
+r.put('/collections/:type/:id',async(req,res)=>res.json(await ContentCollection.findOneAndUpdate({_id:req.params.id,type:req.params.type},req.body,{new:true})));
+r.delete('/collections/:type/:id',async(req,res)=>{await ContentCollection.deleteOne({_id:req.params.id,type:req.params.type});res.status(204).end()});
+r.get('/settings',async(req,res)=>res.json(await SiteSetting.find()));
+r.put('/settings/:key',async(req,res)=>res.json(await SiteSetting.findOneAndUpdate({key:req.params.key},{value:req.body.value},{new:true,upsert:true})));
+export default r;

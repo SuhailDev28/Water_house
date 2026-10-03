@@ -1,0 +1,1 @@
+import {Router} from 'express';import Contact from '../models/Contact.js';const r=Router();r.post('/',async(req,res)=>{const {name,email,phone,message}=req.body;if(!name||!email||!message)return res.status(400).json({message:'Name, email and message are required'});res.status(201).json(await Contact.create({name,email,phone,message}))});export default r;
