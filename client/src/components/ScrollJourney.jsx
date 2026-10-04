@@ -41,8 +41,7 @@ const STAGES = [
         <em>YOUR BODY NEEDS.</em>
       </>
     ),
-    body:
-      "Electrolytes, magnesium, creatine, collagen, caffeine and L-theanine.",
+    body: "Electrolytes, magnesium, creatine, collagen, caffeine and L-theanine.",
     align: "right",
   },
   {
@@ -79,10 +78,24 @@ function clamp(value, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
 
+function lerp(start, end, amount) {
+  return start + (end - start) * amount;
+}
+
 export default function ScrollJourney() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const frameRef = useRef(0);
+
+  const animationFrameRef = useRef(null);
+
+  const targetProgressRef = useRef(0);
+  const smoothProgressRef = useRef(0);
+
+  const targetTimeRef = useRef(0);
+  const smoothTimeRef = useRef(0);
+
+  const lastRenderedProgressRef = useRef(-1);
+
   const [progress, setProgress] = useState(0);
   const [videoReady, setVideoReady] = useState(false);
 
@@ -90,8 +103,20 @@ export default function ScrollJourney() {
     const index = STAGES.findIndex(
       (stage) => progress >= stage.start && progress < stage.end,
     );
+
     return index === -1 ? STAGES.length - 1 : index;
   }, [progress]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) return undefined;
+
+    // Make sure browser never tries to play it normally.
+    video.pause();
+
+    return undefined;
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -99,49 +124,165 @@ export default function ScrollJourney() {
 
     if (!section || !video || !videoReady) return undefined;
 
-    const update = () => {
-      frameRef.current = 0;
+    let destroyed = false;
 
+    const getScrollProgress = () => {
       const rect = section.getBoundingClientRect();
-      const distance = Math.max(
-        section.offsetHeight - window.innerHeight,
+
+      const viewportHeight =
+        window.visualViewport?.height ||
+        window.innerHeight ||
+        document.documentElement.clientHeight;
+
+      const scrollableDistance = Math.max(
+        section.offsetHeight - viewportHeight,
         1,
       );
 
-      const nextProgress = clamp(-rect.top / distance);
-      setProgress((current) =>
-        Math.abs(current - nextProgress) > 0.001 ? nextProgress : current,
-      );
+      return clamp(-rect.top / scrollableDistance);
+    };
+
+    const updateTarget = () => {
+      const nextProgress = getScrollProgress();
+
+      targetProgressRef.current = nextProgress;
 
       if (Number.isFinite(video.duration) && video.duration > 0) {
-        const safeDuration = Math.max(video.duration - 0.04, 0);
-        const targetTime = nextProgress * safeDuration;
+        const safeDuration = Math.max(video.duration - 0.05, 0);
 
-        if (Math.abs(video.currentTime - targetTime) > 0.025) {
-          try {
-            video.currentTime = targetTime;
-          } catch {
-            // Some browsers briefly reject seeking before the first frame is ready.
-          }
-        }
+        targetTimeRef.current = nextProgress * safeDuration;
       }
     };
 
-    const requestUpdate = () => {
-      if (frameRef.current) return;
-      frameRef.current = window.requestAnimationFrame(update);
+    const animate = () => {
+      if (destroyed) return;
+
+      /*
+       * Smooth progression.
+       *
+       * Desktop:
+       * slightly tighter response.
+       *
+       * Mobile:
+       * slightly softer response to absorb momentum scrolling.
+       */
+      const isTouchDevice =
+        window.matchMedia("(pointer: coarse)").matches ||
+        navigator.maxTouchPoints > 0;
+
+      const progressEase = isTouchDevice ? 0.11 : 0.14;
+      const videoEase = isTouchDevice ? 0.1 : 0.13;
+
+      smoothProgressRef.current = lerp(
+        smoothProgressRef.current,
+        targetProgressRef.current,
+        progressEase,
+      );
+
+      smoothTimeRef.current = lerp(
+        smoothTimeRef.current,
+        targetTimeRef.current,
+        videoEase,
+      );
+
+      const smoothProgress = smoothProgressRef.current;
+      const smoothTime = smoothTimeRef.current;
+
+      /*
+       * Avoid updating React on every tiny fractional movement.
+       * This dramatically reduces unnecessary renders.
+       */
+      if (Math.abs(smoothProgress - lastRenderedProgressRef.current) > 0.002) {
+        lastRenderedProgressRef.current = smoothProgress;
+        setProgress(smoothProgress);
+      }
+
+      /*
+       * Seeking too frequently can cause Safari / iPhone stutter.
+       *
+       * Only seek when we're far enough away from the target frame.
+       */
+      if (
+        Number.isFinite(video.duration) &&
+        video.duration > 0 &&
+        Math.abs(video.currentTime - smoothTime) > 0.018
+      ) {
+        try {
+          video.currentTime = smoothTime;
+        } catch {
+          // Browser may temporarily reject seeking while buffering.
+        }
+      }
+
+      animationFrameRef.current = window.requestAnimationFrame(animate);
     };
 
-    requestUpdate();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
+    updateTarget();
+
+    /*
+     * Initialise current values immediately.
+     *
+     * Prevents the video from animating from frame zero when the user
+     * reloads the page while already halfway through the section.
+     */
+    targetProgressRef.current = getScrollProgress();
+    smoothProgressRef.current = targetProgressRef.current;
+
+    if (Number.isFinite(video.duration) && video.duration > 0) {
+      const safeDuration = Math.max(video.duration - 0.05, 0);
+
+      targetTimeRef.current = targetProgressRef.current * safeDuration;
+
+      smoothTimeRef.current = targetTimeRef.current;
+
+      try {
+        video.currentTime = smoothTimeRef.current;
+      } catch {
+        // Safe fallback.
+      }
+    }
+
+    setProgress(smoothProgressRef.current);
+
+    const handleScroll = () => {
+      updateTarget();
+    };
+
+    const handleResize = () => {
+      updateTarget();
+    };
+
+    const handleViewportResize = () => {
+      updateTarget();
+    };
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    window.addEventListener("resize", handleResize, {
+      passive: true,
+    });
+
+    window.visualViewport?.addEventListener("resize", handleViewportResize, {
+      passive: true,
+    });
+
+    animationFrameRef.current = window.requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
+      destroyed = true;
 
-      if (frameRef.current) {
-        window.cancelAnimationFrame(frameRef.current);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+
+      window.visualViewport?.removeEventListener(
+        "resize",
+        handleViewportResize,
+      );
+
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
       }
     };
   }, [videoReady]);
@@ -161,16 +302,23 @@ export default function ScrollJourney() {
           muted
           playsInline
           preload="auto"
+          disablePictureInPicture
           aria-hidden="true"
           onLoadedMetadata={(event) => {
             const video = event.currentTarget;
-            setVideoReady(true);
+
+            video.pause();
 
             try {
               video.currentTime = 0.001;
             } catch {
-              // Safe fallback for browsers that delay the first seek.
+              // Safari can delay first seek.
             }
+
+            setVideoReady(true);
+          }}
+          onCanPlay={(event) => {
+            event.currentTarget.pause();
           }}
         />
 
@@ -179,7 +327,7 @@ export default function ScrollJourney() {
         <div className="wh-scroll-journey__content">
           {STAGES.map((stage, index) => (
             <article
-              key={stage.eyebrow + index}
+              key={`${stage.eyebrow}-${index}`}
               className={[
                 "wh-scroll-copy",
                 `wh-scroll-copy--${stage.align}`,
@@ -187,9 +335,7 @@ export default function ScrollJourney() {
               ].join(" ")}
               aria-hidden={index !== activeStageIndex}
             >
-              <span className="wh-scroll-copy__eyebrow">
-                {stage.eyebrow}
-              </span>
+              <span className="wh-scroll-copy__eyebrow">{stage.eyebrow}</span>
 
               <h2 className="wh-scroll-copy__title">{stage.title}</h2>
 
@@ -201,7 +347,9 @@ export default function ScrollJourney() {
         <div className="wh-scroll-progress" aria-hidden="true">
           <div
             className="wh-scroll-progress__fill"
-            style={{ transform: `scaleX(${progress})` }}
+            style={{
+              transform: `scaleX(${progress})`,
+            }}
           />
         </div>
 
