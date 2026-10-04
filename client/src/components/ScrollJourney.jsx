@@ -82,6 +82,24 @@ function lerp(start, end, amount) {
   return start + (end - start) * amount;
 }
 
+function isIOSDevice() {
+  if (typeof navigator === "undefined") return false;
+
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
+function isTouchDevice() {
+  if (typeof window === "undefined") return false;
+
+  return (
+    window.matchMedia("(pointer: coarse)").matches ||
+    navigator.maxTouchPoints > 0
+  );
+}
+
 export default function ScrollJourney() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
@@ -95,6 +113,8 @@ export default function ScrollJourney() {
   const smoothTimeRef = useRef(0);
 
   const lastRenderedProgressRef = useRef(-1);
+  const lastSeekTimeRef = useRef(0);
+  const primedRef = useRef(false);
 
   const [progress, setProgress] = useState(0);
   const [videoReady, setVideoReady] = useState(false);
@@ -112,8 +132,8 @@ export default function ScrollJourney() {
 
     if (!video) return undefined;
 
-    // Make sure browser never tries to play it normally.
-    video.pause();
+    video.muted = true;
+    video.playsInline = true;
 
     return undefined;
   }, []);
@@ -126,13 +146,17 @@ export default function ScrollJourney() {
 
     let destroyed = false;
 
+    const ios = isIOSDevice();
+    const touch = isTouchDevice();
+
+    const getViewportHeight = () =>
+      window.visualViewport?.height ||
+      window.innerHeight ||
+      document.documentElement.clientHeight;
+
     const getScrollProgress = () => {
       const rect = section.getBoundingClientRect();
-
-      const viewportHeight =
-        window.visualViewport?.height ||
-        window.innerHeight ||
-        document.documentElement.clientHeight;
+      const viewportHeight = getViewportHeight();
 
       const scrollableDistance = Math.max(
         section.offsetHeight - viewportHeight,
@@ -142,36 +166,31 @@ export default function ScrollJourney() {
       return clamp(-rect.top / scrollableDistance);
     };
 
+    const getSafeDuration = () => {
+      if (!Number.isFinite(video.duration) || video.duration <= 0) {
+        return 0;
+      }
+
+      return Math.max(video.duration - 0.06, 0);
+    };
+
     const updateTarget = () => {
       const nextProgress = getScrollProgress();
 
       targetProgressRef.current = nextProgress;
 
-      if (Number.isFinite(video.duration) && video.duration > 0) {
-        const safeDuration = Math.max(video.duration - 0.05, 0);
+      const safeDuration = getSafeDuration();
 
+      if (safeDuration > 0) {
         targetTimeRef.current = nextProgress * safeDuration;
       }
     };
 
-    const animate = () => {
+    const animate = (timestamp) => {
       if (destroyed) return;
 
-      /*
-       * Smooth progression.
-       *
-       * Desktop:
-       * slightly tighter response.
-       *
-       * Mobile:
-       * slightly softer response to absorb momentum scrolling.
-       */
-      const isTouchDevice =
-        window.matchMedia("(pointer: coarse)").matches ||
-        navigator.maxTouchPoints > 0;
-
-      const progressEase = isTouchDevice ? 0.11 : 0.14;
-      const videoEase = isTouchDevice ? 0.1 : 0.13;
+      const progressEase = touch ? 0.11 : 0.14;
+      const videoEase = touch ? 0.1 : 0.13;
 
       smoothProgressRef.current = lerp(
         smoothProgressRef.current,
@@ -188,61 +207,70 @@ export default function ScrollJourney() {
       const smoothProgress = smoothProgressRef.current;
       const smoothTime = smoothTimeRef.current;
 
-      /*
-       * Avoid updating React on every tiny fractional movement.
-       * This dramatically reduces unnecessary renders.
-       */
       if (Math.abs(smoothProgress - lastRenderedProgressRef.current) > 0.002) {
         lastRenderedProgressRef.current = smoothProgress;
         setProgress(smoothProgress);
       }
 
       /*
-       * Seeking too frequently can cause Safari / iPhone stutter.
-       *
-       * Only seek when we're far enough away from the target frame.
+       * iPhone Safari is more sensitive to continuous seeks.
+       * We throttle seek frequency and never seek while Safari
+       * is already processing another seek.
        */
       if (
         Number.isFinite(video.duration) &&
         video.duration > 0 &&
-        Math.abs(video.currentTime - smoothTime) > 0.018
+        video.readyState >= 2 &&
+        !video.seeking
       ) {
-        try {
-          video.currentTime = smoothTime;
-        } catch {
-          // Browser may temporarily reject seeking while buffering.
+        const difference = Math.abs(video.currentTime - smoothTime);
+
+        const seekThreshold = ios ? 0.05 : 0.02;
+        const seekInterval = ios ? 50 : 16;
+
+        if (
+          difference > seekThreshold &&
+          timestamp - lastSeekTimeRef.current >= seekInterval
+        ) {
+          try {
+            const safeDuration = getSafeDuration();
+
+            video.currentTime = clamp(smoothTime, 0.001, safeDuration);
+
+            lastSeekTimeRef.current = timestamp;
+          } catch {
+            // Safari may reject a seek while decoding/buffering.
+          }
         }
       }
 
       animationFrameRef.current = window.requestAnimationFrame(animate);
     };
 
-    updateTarget();
-
     /*
-     * Initialise current values immediately.
-     *
-     * Prevents the video from animating from frame zero when the user
-     * reloads the page while already halfway through the section.
+     * Start from the correct point immediately if the page
+     * loads while already scrolled into this section.
      */
-    targetProgressRef.current = getScrollProgress();
-    smoothProgressRef.current = targetProgressRef.current;
+    const initialProgress = getScrollProgress();
+    const safeDuration = getSafeDuration();
 
-    if (Number.isFinite(video.duration) && video.duration > 0) {
-      const safeDuration = Math.max(video.duration - 0.05, 0);
+    targetProgressRef.current = initialProgress;
+    smoothProgressRef.current = initialProgress;
 
-      targetTimeRef.current = targetProgressRef.current * safeDuration;
+    targetTimeRef.current =
+      safeDuration > 0 ? initialProgress * safeDuration : 0;
 
-      smoothTimeRef.current = targetTimeRef.current;
+    smoothTimeRef.current = targetTimeRef.current;
 
+    setProgress(initialProgress);
+
+    if (safeDuration > 0 && video.readyState >= 2) {
       try {
-        video.currentTime = smoothTimeRef.current;
+        video.currentTime = clamp(smoothTimeRef.current, 0.001, safeDuration);
       } catch {
         // Safe fallback.
       }
     }
-
-    setProgress(smoothProgressRef.current);
 
     const handleScroll = () => {
       updateTarget();
@@ -255,6 +283,8 @@ export default function ScrollJourney() {
     const handleViewportResize = () => {
       updateTarget();
     };
+
+    updateTarget();
 
     window.addEventListener("scroll", handleScroll, {
       passive: true,
@@ -287,6 +317,50 @@ export default function ScrollJourney() {
     };
   }, [videoReady]);
 
+  const primeVideo = async (video) => {
+    if (!video || primedRef.current) return;
+
+    primedRef.current = true;
+
+    video.muted = true;
+    video.playsInline = true;
+
+    try {
+      /*
+       * iOS Safari can show black until it has actually decoded
+       * at least one frame. Brief autoplay while muted primes it.
+       */
+      await video.play();
+
+      window.setTimeout(() => {
+        try {
+          video.pause();
+
+          if (Number.isFinite(video.duration) && video.duration > 0) {
+            video.currentTime = 0.01;
+          }
+        } catch {
+          // Ignore delayed Safari seek error.
+        }
+
+        setVideoReady(true);
+      }, 80);
+    } catch {
+      /*
+       * Fallback for browsers that reject play().
+       */
+      try {
+        if (Number.isFinite(video.duration) && video.duration > 0) {
+          video.currentTime = 0.01;
+        }
+      } catch {
+        // Ignore early seek failure.
+      }
+
+      setVideoReady(true);
+    }
+  };
+
   return (
     <section
       id="journey"
@@ -301,24 +375,41 @@ export default function ScrollJourney() {
           src="/videos/water-house-journey.mp4"
           muted
           playsInline
+          autoPlay
           preload="auto"
           disablePictureInPicture
           aria-hidden="true"
           onLoadedMetadata={(event) => {
             const video = event.currentTarget;
 
-            video.pause();
+            video.muted = true;
+            video.playsInline = true;
 
-            try {
-              video.currentTime = 0.001;
-            } catch {
-              // Safari can delay first seek.
+            primeVideo(video);
+          }}
+          onLoadedData={(event) => {
+            const video = event.currentTarget;
+
+            if (!primedRef.current) {
+              primeVideo(video);
             }
-
-            setVideoReady(true);
           }}
           onCanPlay={(event) => {
-            event.currentTarget.pause();
+            const video = event.currentTarget;
+
+            /*
+             * Once the first frame is decoded we don't want the
+             * video playing independently from scroll.
+             */
+            if (videoReady && !video.paused) {
+              video.pause();
+            }
+          }}
+          onError={(event) => {
+            console.error(
+              "Water House scroll video failed:",
+              event.currentTarget.error,
+            );
           }}
         />
 

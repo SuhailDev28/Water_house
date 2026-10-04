@@ -2,13 +2,24 @@
 /*
   WATER HOUSE — RESPONSIVE SCROLL JOURNEY
 
-  Performance goals:
+  Desktop / landscape:
+  - Cinematic full-bleed video
+
+  Portrait / mobile:
+  - Preserve complete 16:9 video
+  - Avoid destructive cropping
+
+  Performance:
   - Smooth scroll-linked video scrubbing
-  - Stable sticky positioning across desktop/tablet/mobile
-  - Preserve complete 16:9 video on portrait devices
-  - Reduce repaint/layout overhead
-  - Improve Safari/iOS compositing
+  - Stable sticky positioning
+  - Safari / iPhone compatibility
+  - GPU compositing where useful
+  - No paint containment on sticky video section
 */
+
+/* =========================================================
+   GLOBAL PAGE SAFETY
+   ========================================================= */
 
 .site-shell,
 .water-house-home {
@@ -26,7 +37,9 @@
 
 .wh-scroll-journey {
   position: relative;
+
   height: 500vh;
+
   overflow: visible;
 
   background: #071b20;
@@ -34,14 +47,14 @@
   isolation: isolate;
 
   /*
-    Helps browsers contain expensive layout/paint work
-    to this cinematic section.
-  */
-  contain: layout paint;
+    IMPORTANT:
+    Do NOT use contain: paint or contain: layout paint here.
 
-  /*
-    Prevent horizontal overscroll from transforms/video.
+    Mobile Safari can fail to correctly composite sticky video
+    elements inside painted containment, which can result in a
+    black video frame on iPhone.
   */
+
   overscroll-behavior-x: none;
 }
 
@@ -69,14 +82,15 @@
   z-index: 1;
 
   /*
-    Force this layer onto the compositor.
-    Particularly useful on Safari/iOS.
+    Dedicated compositing layer for Safari / iOS.
   */
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+
+  -webkit-perspective: 1000;
 }
 
 /* =========================================================
@@ -107,19 +121,21 @@
   user-select: none;
   -webkit-user-select: none;
 
+  visibility: visible;
+
+  opacity: 1;
+
   /*
-    GPU compositing helps prevent frame flashing and repaint
-    issues during rapid currentTime seeking.
+    Safari / iPhone compositing support.
   */
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
-  /*
-    Avoid interpolation artifacts on some mobile browsers.
-  */
+  -webkit-perspective: 1000;
+
   image-rendering: auto;
 }
 
@@ -152,10 +168,11 @@
       rgba(3, 15, 18, 0.38) 100%
     );
 
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* =========================================================
@@ -171,9 +188,11 @@
 
   pointer-events: none;
 
-  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* =========================================================
@@ -202,9 +221,6 @@
     transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 0.38s;
 
-  /*
-    Only animate compositor-friendly properties.
-  */
   will-change: opacity, transform;
 
   backface-visibility: hidden;
@@ -345,7 +361,8 @@
 
   background: rgba(255, 255, 255, 0.22);
 
-  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .wh-scroll-progress__fill {
@@ -361,6 +378,7 @@
   will-change: transform;
 
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* =========================================================
@@ -390,7 +408,8 @@
 
   letter-spacing: 0.16em;
 
-  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .wh-scroll-hint__line {
@@ -435,10 +454,6 @@
 
 @media (max-width: 900px) {
   .wh-scroll-journey {
-    /*
-      Slightly shorter than desktop to make touch scrolling
-      feel more responsive.
-    */
     height: 430vh;
   }
 
@@ -478,7 +493,7 @@
 
 /* =========================================================
    PORTRAIT DEVICES
-   Keep entire 16:9 movie visible
+   Keep full 16:9 video visible
    ========================================================= */
 
 @media (orientation: portrait) and (max-width: 900px) {
@@ -488,27 +503,27 @@
 
   .wh-scroll-journey__video {
     width: 100%;
-
     height: 100%;
 
     object-fit: contain;
 
     object-position: center center;
+
+    background: #071b20;
   }
 
   /*
-    Dark gradient blends the video letterboxing naturally into
-    the Water House background.
+    Blend letterboxed areas into background while maintaining
+    enough contrast for text.
   */
   .wh-scroll-journey__shade {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(7, 27, 32, 0.4) 0%,
-        rgba(7, 27, 32, 0.02) 23%,
-        rgba(7, 27, 32, 0.02) 56%,
-        rgba(7, 27, 32, 0.88) 100%
-      );
+    background: linear-gradient(
+      180deg,
+      rgba(7, 27, 32, 0.4) 0%,
+      rgba(7, 27, 32, 0.02) 23%,
+      rgba(7, 27, 32, 0.02) 56%,
+      rgba(7, 27, 32, 0.88) 100%
+    );
   }
 }
 
@@ -518,25 +533,45 @@
 
 @media (max-width: 600px) {
   .wh-scroll-journey {
-    /*
-      Shorter scroll length improves touch responsiveness and
-      stops the sequence feeling excessively long on phones.
-    */
     height: 380vh;
 
-    contain: layout paint;
+    /*
+      DO NOT add contain: layout paint here.
+      This is intentionally disabled for iPhone/Safari.
+    */
   }
 
   .wh-scroll-journey__sticky {
     /*
-      svh is stable.
-      dvh adapts to browser chrome.
-      Last declaration is used where supported.
+      Stable fallback first.
+      Dynamic viewport second where supported.
     */
     height: 100svh;
     height: 100dvh;
 
     min-height: 100svh;
+
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+
+  .wh-scroll-journey__video {
+    /*
+      Keep complete video visible on portrait phones.
+    */
+    object-fit: contain;
+
+    object-position: center center;
+
+    visibility: visible;
+
+    opacity: 1;
+
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .wh-scroll-copy,
@@ -545,10 +580,7 @@
     left: 20px;
     right: 20px;
 
-    bottom: calc(
-      64px +
-      env(safe-area-inset-bottom)
-    );
+    bottom: calc(64px + env(safe-area-inset-bottom));
   }
 
   .wh-scroll-copy__eyebrow {
@@ -581,10 +613,7 @@
     left: 20px;
     right: 20px;
 
-    bottom: calc(
-      18px +
-      env(safe-area-inset-bottom)
-    );
+    bottom: calc(18px + env(safe-area-inset-bottom));
   }
 
   .wh-scroll-hint {
@@ -622,13 +651,16 @@
   }
 
   .wh-scroll-journey__sticky {
+    height: 100svh;
     height: 100dvh;
 
-    min-height: 100dvh;
+    min-height: 100svh;
   }
 
   .wh-scroll-journey__video {
     object-fit: cover;
+
+    object-position: center center;
   }
 
   .wh-scroll-copy,
@@ -666,7 +698,7 @@
 }
 
 /* =========================================================
-   HIGH REFRESH RATE / PRECISE POINTER DEVICES
+   DESKTOP / PRECISE POINTER
    ========================================================= */
 
 @media (hover: hover) and (pointer: fine) {
