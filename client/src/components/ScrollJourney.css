@@ -1,0 +1,389 @@
+/*
+  WATER HOUSE â€” RESPONSIVE SCROLL JOURNEY
+  Desktop/landscape: cinematic full-bleed.
+  Portrait/mobile: preserve the complete 16:9 video without destructive cropping.
+*/
+
+.site-shell,
+.water-house-home {
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+}
+
+.site-main {
+  overflow: visible !important;
+}
+
+.wh-scroll-journey {
+  position: relative;
+  height: 500vh;
+  overflow: visible;
+  background: #071b20;
+  isolation: isolate;
+}
+
+.wh-scroll-journey__sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #071b20;
+  z-index: 1;
+}
+
+.wh-scroll-journey__video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center center;
+  background: #071b20;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.wh-scroll-journey__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 15, 18, 0.48) 0%,
+      rgba(3, 15, 18, 0.08) 45%,
+      rgba(3, 15, 18, 0.08) 70%,
+      rgba(3, 15, 18, 0.28) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(3, 15, 18, 0.08) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(3, 15, 18, 0.38) 100%
+    );
+}
+
+.wh-scroll-journey__content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wh-scroll-copy {
+  position: absolute;
+  top: 50%;
+  left: clamp(24px, 7vw, 110px);
+  width: min(620px, 46vw);
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-42%);
+  transition:
+    opacity 0.45s ease,
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.45s ease;
+  will-change: opacity, transform;
+}
+
+.wh-scroll-copy.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%);
+}
+
+.wh-scroll-copy--right {
+  left: auto;
+  right: clamp(24px, 7vw, 110px);
+  text-align: right;
+}
+
+.wh-scroll-copy--center {
+  left: 50%;
+  right: auto;
+  width: min(900px, 88vw);
+  text-align: center;
+  transform: translate(-50%, -42%);
+}
+
+.wh-scroll-copy--center.is-active {
+  transform: translate(-50%, -50%);
+}
+
+.wh-scroll-copy__eyebrow {
+  display: block;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.wh-scroll-copy__title {
+  margin: 0;
+  color: #fff;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(46px, 6vw, 100px);
+  font-weight: 400;
+  line-height: 0.93;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.wh-scroll-copy__title em {
+  color: var(--wh-coco, #f1ddc9);
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.wh-scroll-copy__body {
+  max-width: 520px;
+  margin: 24px 0 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(15px, 1.2vw, 20px);
+  line-height: 1.55;
+}
+
+.wh-scroll-copy--right .wh-scroll-copy__body {
+  margin-left: auto;
+}
+
+.wh-scroll-copy--center .wh-scroll-copy__body {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wh-scroll-progress {
+  position: absolute;
+  left: clamp(22px, 7vw, 110px);
+  right: clamp(22px, 7vw, 110px);
+  bottom: max(22px, env(safe-area-inset-bottom));
+  z-index: 4;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.wh-scroll-progress__fill {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.94);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.wh-scroll-hint {
+  position: absolute;
+  right: clamp(24px, 7vw, 110px);
+  bottom: 55px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.wh-scroll-hint__line {
+  display: block;
+  width: 34px;
+  height: 1px;
+  background: currentColor;
+}
+
+.wh-scroll-journey + .benefit-strip {
+  position: relative;
+  z-index: 2;
+}
+
+/* Large ultrawide screens */
+@media (min-aspect-ratio: 21/9) {
+  .wh-scroll-journey__video {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .wh-scroll-copy {
+    width: min(560px, 34vw);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .wh-scroll-journey {
+    height: 450vh;
+  }
+
+  .wh-scroll-copy,
+  .wh-scroll-copy--right,
+  .wh-scroll-copy--center {
+    top: auto;
+    left: 6%;
+    right: 6%;
+    bottom: 11vh;
+    width: auto;
+    text-align: left;
+    transform: translateY(20px);
+  }
+
+  .wh-scroll-copy.is-active,
+  .wh-scroll-copy--right.is-active,
+  .wh-scroll-copy--center.is-active {
+    transform: translateY(0);
+  }
+
+  .wh-scroll-copy--right .wh-scroll-copy__body,
+  .wh-scroll-copy--center .wh-scroll-copy__body {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .wh-scroll-copy__title {
+    font-size: clamp(42px, 9vw, 70px);
+  }
+}
+
+/* Portrait devices: keep the whole 16:9 video visible. */
+@media (orientation: portrait) and (max-width: 900px) {
+  .wh-scroll-journey__sticky {
+    background: #071b20;
+  }
+
+  .wh-scroll-journey__video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  /* Dark gradient hides letterbox edges and gives text contrast. */
+  .wh-scroll-journey__shade {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7, 27, 32, 0.44) 0%,
+        rgba(7, 27, 32, 0.02) 24%,
+        rgba(7, 27, 32, 0.03) 58%,
+        rgba(7, 27, 32, 0.86) 100%
+      );
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  .wh-scroll-journey {
+    height: 400vh;
+  }
+
+  .wh-scroll-journey__sticky {
+    height: 100dvh;
+    min-height: 100svh;
+  }
+
+  .wh-scroll-copy,
+  .wh-scroll-copy--right,
+  .wh-scroll-copy--center {
+    left: 20px;
+    right: 20px;
+    bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+
+  .wh-scroll-copy__eyebrow {
+    margin-bottom: 10px;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+
+  .wh-scroll-copy__title {
+    font-size: clamp(34px, 11vw, 52px);
+    line-height: 0.96;
+  }
+
+  .wh-scroll-copy__body {
+    max-width: 310px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .wh-scroll-progress {
+    left: 20px;
+    right: 20px;
+    bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+
+  .wh-scroll-hint {
+    display: none;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 390px) {
+  .wh-scroll-copy__title {
+    font-size: clamp(31px, 10.5vw, 44px);
+  }
+
+  .wh-scroll-copy__body {
+    max-width: 280px;
+    font-size: 12.5px;
+  }
+}
+
+/* Short landscape phones */
+@media (orientation: landscape) and (max-height: 520px) {
+  .wh-scroll-journey {
+    height: 420vh;
+  }
+
+  .wh-scroll-journey__video {
+    object-fit: cover;
+  }
+
+  .wh-scroll-copy,
+  .wh-scroll-copy--right,
+  .wh-scroll-copy--center {
+    top: 50%;
+    bottom: auto;
+    left: 5%;
+    right: auto;
+    width: min(520px, 45vw);
+    text-align: left;
+    transform: translateY(-46%);
+  }
+
+  .wh-scroll-copy.is-active,
+  .wh-scroll-copy--right.is-active,
+  .wh-scroll-copy--center.is-active {
+    transform: translateY(-50%);
+  }
+
+  .wh-scroll-copy__title {
+    font-size: clamp(34px, 6vw, 58px);
+  }
+
+  .wh-scroll-copy__body {
+    font-size: 13px;
+    margin-top: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wh-scroll-copy {
+    transition: none;
+  }
+}
