@@ -1,0 +1,316 @@
+/* =========================================================
+   GLOBAL SCROLL / STICKY SAFETY
+   Required for the Water House scroll-scrub journey.
+========================================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+body {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.site-main {
+  overflow: visible;
+}
+
+.water-house-home {
+  position: relative;
+}
+
+/* =========================================================
+   WATER HOUSE — SCROLL JOURNEY
+   Sticky scroll-scrub cinematic video section
+========================================================= */
+
+.wh-scroll-journey {
+  position: relative;
+  height: 500vh;
+  overflow: visible;
+  background: #071b20;
+  isolation: isolate;
+}
+
+.wh-scroll-journey__sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #071b20;
+  z-index: 1;
+}
+
+.wh-scroll-journey__video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.wh-scroll-journey__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 15, 18, 0.44) 0%,
+      rgba(3, 15, 18, 0.06) 45%,
+      rgba(3, 15, 18, 0.08) 70%,
+      rgba(3, 15, 18, 0.28) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(3, 15, 18, 0.08) 0%,
+      rgba(3, 15, 18, 0) 30%,
+      rgba(3, 15, 18, 0) 70%,
+      rgba(3, 15, 18, 0.36) 100%
+    );
+}
+
+.wh-scroll-journey__content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wh-scroll-copy {
+  position: absolute;
+  top: 50%;
+  left: 7%;
+  width: min(620px, 46vw);
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-42%);
+  transition:
+    opacity 0.45s ease,
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.45s ease;
+  will-change: opacity, transform;
+}
+
+.wh-scroll-copy.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%);
+}
+
+.wh-scroll-copy--right {
+  left: auto;
+  right: 7%;
+  text-align: right;
+}
+
+.wh-scroll-copy--center {
+  left: 50%;
+  width: min(900px, 88vw);
+  text-align: center;
+  transform: translate(-50%, -42%);
+}
+
+.wh-scroll-copy--center.is-active {
+  transform: translate(-50%, -50%);
+}
+
+.wh-scroll-copy__eyebrow {
+  display: block;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.wh-scroll-copy__title {
+  margin: 0;
+  color: #fff;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(46px, 6vw, 100px);
+  font-weight: 400;
+  line-height: 0.93;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.wh-scroll-copy__title em {
+  color: var(--wh-coco, #f1ddc9);
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.wh-scroll-copy__body {
+  max-width: 520px;
+  margin: 24px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(15px, 1.2vw, 20px);
+  line-height: 1.55;
+}
+
+.wh-scroll-copy--right .wh-scroll-copy__body {
+  margin-left: auto;
+}
+
+.wh-scroll-copy--center .wh-scroll-copy__body {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wh-scroll-progress {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 32px;
+  z-index: 4;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.wh-scroll-progress__fill {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.92);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.wh-scroll-hint {
+  position: absolute;
+  right: 7%;
+  bottom: 55px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+
+.wh-scroll-hint__line {
+  width: 34px;
+  height: 1px;
+  background: currentColor;
+}
+
+/* Prevent the section after the journey from visually overlapping sticky media. */
+.wh-scroll-journey + .benefit-strip {
+  position: relative;
+  z-index: 2;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .wh-scroll-journey {
+    height: 450vh;
+  }
+
+  .wh-scroll-copy,
+  .wh-scroll-copy--right,
+  .wh-scroll-copy--center {
+    top: auto;
+    left: 6%;
+    right: 6%;
+    bottom: 12vh;
+    width: auto;
+    text-align: left;
+    transform: translateY(20px);
+  }
+
+  .wh-scroll-copy.is-active,
+  .wh-scroll-copy--right.is-active,
+  .wh-scroll-copy--center.is-active {
+    transform: translateY(0);
+  }
+
+  .wh-scroll-copy--right .wh-scroll-copy__body,
+  .wh-scroll-copy--center .wh-scroll-copy__body {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .wh-scroll-journey {
+    height: 400vh;
+  }
+
+  .wh-scroll-journey__video {
+    object-position: center center;
+  }
+
+  .wh-scroll-journey__shade {
+    background: linear-gradient(
+      180deg,
+      rgba(4, 16, 20, 0.03) 0%,
+      rgba(4, 16, 20, 0.06) 45%,
+      rgba(4, 16, 20, 0.78) 100%
+    );
+  }
+
+  .wh-scroll-copy,
+  .wh-scroll-copy--right,
+  .wh-scroll-copy--center {
+    left: 22px;
+    right: 22px;
+    bottom: 11vh;
+  }
+
+  .wh-scroll-copy__eyebrow {
+    margin-bottom: 12px;
+    font-size: 10px;
+  }
+
+  .wh-scroll-copy__title {
+    font-size: clamp(38px, 12vw, 56px);
+    line-height: 0.95;
+  }
+
+  .wh-scroll-copy__body {
+    max-width: 330px;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  .wh-scroll-progress {
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+  }
+
+  .wh-scroll-hint {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wh-scroll-copy {
+    transition: none;
+  }
+}

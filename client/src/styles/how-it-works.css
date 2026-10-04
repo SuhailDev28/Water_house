@@ -1,0 +1,822 @@
+/* =========================================================
+   WATER HOUSE — HOW IT WORKS
+========================================================= */
+
+.ritual-page {
+  overflow: hidden;
+  background: var(--wh-cream, #fff9f1);
+  color: var(--wh-ink, #4d1713);
+}
+
+
+/* HERO */
+
+.ritual-hero {
+  min-height: calc(100vh - 78px);
+
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+
+  background:
+    var(--wh-coco, #f1ddc9);
+}
+
+.ritual-hero-copy {
+  padding:
+    clamp(85px, 9vw, 145px)
+    clamp(24px, 6vw, 100px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.ritual-hero-logo {
+  width:
+    clamp(130px, 11vw, 185px);
+
+  height: auto;
+
+  margin-bottom: 28px;
+}
+
+.ritual-eyebrow {
+  display: inline-flex;
+
+  padding:
+    8px 14px;
+
+  border:
+    1px solid
+    rgba(77,23,19,.3);
+
+  border-radius:
+    999px;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .16em;
+}
+
+.ritual-hero h1 {
+  margin:
+    30px 0
+    28px;
+
+  font-family:
+    "DM Serif Display",
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(72px, 8vw, 138px);
+
+  font-weight:
+    400;
+
+  line-height:
+    .8;
+
+  letter-spacing:
+    -.055em;
+}
+
+.ritual-hero h1 em {
+  color:
+    var(--wh-cherry, #6a1712);
+}
+
+.ritual-hero-copy > p {
+  max-width:
+    570px;
+
+  margin:
+    0;
+
+  color:
+    var(--muted, #745d53);
+
+  font-size:
+    clamp(16px,1.3vw,19px);
+
+  line-height:
+    1.7;
+}
+
+.ritual-primary-cta {
+  min-height:
+    52px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    9px;
+
+  margin-top:
+    30px;
+
+  padding:
+    0 25px;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--wh-cherry,#6a1712);
+
+  color:
+    #fff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .08em;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* HERO RIGHT */
+
+.ritual-hero-visual {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    60px;
+
+  background:
+    var(--wh-matcha,#aab59f);
+}
+
+.ritual-hero-card {
+  width:
+    min(440px,100%);
+
+  padding:
+    24px;
+
+  border-radius:
+    30px;
+
+  background:
+    var(--wh-cream,#fff9f1);
+
+  box-shadow:
+    0 30px 70px
+    rgba(77,23,19,.14);
+}
+
+.ritual-hero-card-label {
+  display:
+    block;
+
+  margin-bottom:
+    20px;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .16em;
+}
+
+.ritual-hero-line {
+  display:
+    grid;
+
+  grid-template-columns:
+    50px 1fr;
+
+  gap:
+    15px;
+
+  align-items:
+    center;
+
+  padding:
+    20px 0;
+
+  border-bottom:
+    1px solid
+    rgba(77,23,19,.13);
+}
+
+.ritual-hero-line:last-child {
+  border-bottom:
+    0;
+}
+
+.ritual-hero-line span {
+  width:
+    38px;
+
+  height:
+    38px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--wh-cherry,#6a1712);
+
+  color:
+    #fff;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+}
+
+.ritual-hero-line strong {
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size:
+    26px;
+
+  font-weight:
+    400;
+}
+
+
+/* INTRO */
+
+.ritual-intro {
+  padding:
+    clamp(95px, 11vw, 165px)
+    clamp(24px,7vw,110px);
+
+  text-align:
+    center;
+}
+
+.ritual-intro h2 {
+  margin:
+    32px 0
+    25px;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size:
+    clamp(62px,7vw,108px);
+
+  font-weight:
+    400;
+
+  line-height:
+    .88;
+
+  letter-spacing:
+    -.05em;
+}
+
+.ritual-intro p {
+  max-width:
+    700px;
+
+  margin:
+    0 auto;
+
+  color:
+    var(--muted);
+
+  font-size:
+    18px;
+
+  line-height:
+    1.7;
+}
+
+
+/* STEPS */
+
+.ritual-steps-grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:
+    14px;
+
+  padding:
+    0
+    clamp(20px,5vw,70px)
+    clamp(90px,10vw,150px);
+}
+
+.ritual-step-card {
+  min-height:
+    480px;
+
+  padding:
+    30px;
+
+  border-radius:
+    30px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    space-between;
+}
+
+.ritual-step-coco {
+  background:
+    var(--wh-coco,#f1ddc9);
+}
+
+.ritual-step-peach {
+  background:
+    var(--wh-peach,#e7a16f);
+}
+
+.ritual-step-matcha {
+  background:
+    var(--wh-matcha,#aab59f);
+}
+
+.ritual-step-cherry {
+  background:
+    var(--wh-cherry,#6a1712);
+
+  color:
+    #fff;
+}
+
+.ritual-step-top {
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+}
+
+.ritual-step-number {
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size:
+    76px;
+
+  line-height:
+    1;
+
+  opacity:
+    .25;
+}
+
+.ritual-step-content small {
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .16em;
+}
+
+.ritual-step-content h3 {
+  margin:
+    14px 0
+    18px;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size:
+    clamp(44px,4vw,68px);
+
+  font-weight:
+    400;
+
+  line-height:
+    .95;
+}
+
+.ritual-step-content p {
+  max-width:
+    420px;
+
+  margin:
+    0;
+
+  line-height:
+    1.65;
+
+  opacity:
+    .8;
+}
+
+
+/* FUNCTION SECTION */
+
+.ritual-function-section {
+  display:
+    grid;
+
+  grid-template-columns:
+    1.15fr .85fr;
+
+  min-height:
+    780px;
+}
+
+.ritual-function-image {
+  position:
+    relative;
+
+  min-height:
+    700px;
+
+  overflow:
+    hidden;
+}
+
+.ritual-function-image img {
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+}
+
+.ritual-image-label {
+  position:
+    absolute;
+
+  left:
+    25px;
+
+  bottom:
+    25px;
+
+  padding:
+    10px 15px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,249,241,.9);
+
+  color:
+    var(--wh-cherry);
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .14em;
+}
+
+.ritual-function-copy {
+  padding:
+    clamp(50px,7vw,100px);
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
+  background:
+    var(--wh-leaf,#344c3d);
+
+  color:
+    #fff;
+}
+
+.ritual-function-copy h2 {
+  margin:
+    30px 0
+    25px;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size:
+    clamp(60px,6vw,96px);
+
+  font-weight:
+    400;
+
+  line-height:
+    .88;
+}
+
+.ritual-function-copy > p {
+  max-width:
+    480px;
+
+  color:
+    rgba(255,255,255,.74);
+
+  line-height:
+    1.7;
+}
+
+.ritual-function-list {
+  margin-top:
+    35px;
+}
+
+.ritual-function-row {
+  display:
+    grid;
+
+  grid-template-columns:
+    45px 1fr auto;
+
+  align-items:
+    center;
+
+  gap:
+    15px;
+
+  padding:
+    18px 0;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.18);
+}
+
+.ritual-function-row span {
+  font-size:
+    10px;
+}
+
+.ritual-function-row strong {
+  font-size:
+    13px;
+
+  letter-spacing:
+    .09em;
+}
+
+
+/* FINAL STATEMENT */
+
+.ritual-statement {
+  min-height:
+    760px;
+
+  padding:
+    100px 24px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
+
+  background:
+    var(--wh-cherry,#6a1712);
+
+  color:
+    #fff;
+}
+
+.ritual-statement-logo {
+  width:
+    clamp(145px,12vw,200px);
+
+  height:
+    auto;
+
+  margin-bottom:
+    25px;
+
+  filter:
+    brightness(0)
+    invert(1);
+}
+
+.ritual-statement > span {
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .18em;
+}
+
+.ritual-statement h2 {
+  margin:
+    30px 0;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size:
+    clamp(72px,9vw,140px);
+
+  font-weight:
+    400;
+
+  line-height:
+    .8;
+}
+
+.ritual-statement p {
+  color:
+    rgba(255,255,255,.72);
+
+  font-size:
+    17px;
+}
+
+.ritual-statement-button {
+  min-height:
+    52px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    9px;
+
+  margin-top:
+    28px;
+
+  padding:
+    0 25px;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--wh-coco,#f1ddc9);
+
+  color:
+    var(--wh-cherry,#6a1712);
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .08em;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* TABLET */
+
+@media (max-width: 980px) {
+
+  .ritual-hero {
+    grid-template-columns:
+      1fr;
+  }
+
+  .ritual-hero-visual {
+    min-height:
+      600px;
+  }
+
+  .ritual-function-section {
+    grid-template-columns:
+      1fr;
+  }
+
+  .ritual-function-image {
+    min-height:
+      600px;
+  }
+}
+
+
+/* MOBILE */
+
+@media (max-width: 620px) {
+
+  .ritual-hero-copy {
+    padding:
+      75px 22px;
+  }
+
+  .ritual-hero h1 {
+    font-size:
+      66px;
+  }
+
+  .ritual-hero-visual {
+    padding:
+      35px 20px;
+
+    min-height:
+      520px;
+  }
+
+  .ritual-steps-grid {
+    grid-template-columns:
+      1fr;
+
+    padding-inline:
+      12px;
+  }
+
+  .ritual-step-card {
+    min-height:
+      410px;
+  }
+
+  .ritual-function-image {
+    min-height:
+      480px;
+  }
+
+  .ritual-function-copy {
+    padding:
+      70px 22px;
+  }
+
+  .ritual-statement {
+    min-height:
+      650px;
+  }
+
+  .ritual-statement h2 {
+    font-size:
+      68px;
+  }
+}
