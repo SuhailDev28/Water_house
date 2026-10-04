@@ -1,4 +1,3 @@
-
 /*
   WATER HOUSE — RESPONSIVE SCROLL JOURNEY
 
@@ -6,8 +5,8 @@
   - Cinematic full-bleed video
 
   Portrait / mobile:
-  - Preserve complete 16:9 video
-  - Avoid destructive cropping
+  - Full viewport video
+  - No black / letterbox borders
 
   Performance:
   - Smooth scroll-linked video scrubbing
@@ -46,15 +45,6 @@
 
   isolation: isolate;
 
-  /*
-    IMPORTANT:
-    Do NOT use contain: paint or contain: layout paint here.
-
-    Mobile Safari can fail to correctly composite sticky video
-    elements inside painted containment, which can result in a
-    black video frame on iPhone.
-  */
-
   overscroll-behavior-x: none;
 }
 
@@ -81,9 +71,6 @@
 
   z-index: 1;
 
-  /*
-    Dedicated compositing layer for Safari / iOS.
-  */
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
 
@@ -114,7 +101,7 @@
   object-fit: cover;
   object-position: center center;
 
-  background: #071b20;
+  background: transparent;
 
   pointer-events: none;
 
@@ -125,9 +112,6 @@
 
   opacity: 1;
 
-  /*
-    Safari / iPhone compositing support.
-  */
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
 
@@ -433,13 +417,12 @@
 }
 
 /* =========================================================
-   LARGE ULTRAWIDE SCREENS
+   ULTRAWIDE
    ========================================================= */
 
 @media (min-aspect-ratio: 21/9) {
   .wh-scroll-journey__video {
     object-fit: cover;
-
     object-position: center center;
   }
 
@@ -493,7 +476,7 @@
 
 /* =========================================================
    PORTRAIT DEVICES
-   Keep full 16:9 video visible
+   Full bleed — no black border
    ========================================================= */
 
 @media (orientation: portrait) and (max-width: 900px) {
@@ -505,24 +488,20 @@
     width: 100%;
     height: 100%;
 
-    object-fit: contain;
+    object-fit: cover;
 
     object-position: center center;
 
-    background: #071b20;
+    background: transparent;
   }
 
-  /*
-    Blend letterboxed areas into background while maintaining
-    enough contrast for text.
-  */
   .wh-scroll-journey__shade {
     background: linear-gradient(
       180deg,
-      rgba(7, 27, 32, 0.4) 0%,
-      rgba(7, 27, 32, 0.02) 23%,
-      rgba(7, 27, 32, 0.02) 56%,
-      rgba(7, 27, 32, 0.88) 100%
+      rgba(7, 27, 32, 0.06) 0%,
+      rgba(7, 27, 32, 0.01) 35%,
+      rgba(7, 27, 32, 0.08) 62%,
+      rgba(7, 27, 32, 0.72) 100%
     );
   }
 }
@@ -534,18 +513,9 @@
 @media (max-width: 600px) {
   .wh-scroll-journey {
     height: 380vh;
-
-    /*
-      DO NOT add contain: layout paint here.
-      This is intentionally disabled for iPhone/Safari.
-    */
   }
 
   .wh-scroll-journey__sticky {
-    /*
-      Stable fallback first.
-      Dynamic viewport second where supported.
-    */
     height: 100svh;
     height: 100dvh;
 
@@ -556,12 +526,18 @@
   }
 
   .wh-scroll-journey__video {
-    /*
-      Keep complete video visible on portrait phones.
-    */
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
 
+    object-fit: cover;
+
+    /*
+      Slightly favour the centre/top of the source video.
+      Change to center center if your subject becomes too high.
+    */
     object-position: center center;
+
+    background: transparent;
 
     visibility: visible;
 
@@ -659,7 +635,6 @@
 
   .wh-scroll-journey__video {
     object-fit: cover;
-
     object-position: center center;
   }
 
