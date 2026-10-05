@@ -7736,3 +7736,486 @@ background 0.2s ease;
     transform: scale(0.82);
   }
 }
+
+
+
+
+/* =========================================================
+   WATER HOUSE â€” ENHANCEMENT PACK
+   Ingredient realism / ice physics / dissolve cloud / replay
+========================================================= */
+
+/* ---------------------------------------------------------
+   ICE PHYSICS
+--------------------------------------------------------- */
+
+.wh-cup-ice {
+  z-index: 16;
+}
+
+.wh-ice-cube {
+  animation:
+    wh-ice-natural-float
+    6.2s
+    ease-in-out
+    infinite;
+}
+
+.wh-ice-cube.ice-1,
+.wh-ice-cube.ice-2,
+.wh-ice-cube.ice-3 {
+  top: 8% !important;
+}
+
+.wh-ice-cube.ice-4 {
+  top: 18% !important;
+}
+
+.wh-ice-cube.ice-5 {
+  top: 27% !important;
+}
+
+.wh-ice-cube.ice-6 {
+  top: 34% !important;
+}
+
+.wh-ice-cube.ice-7 {
+  top: 42% !important;
+}
+
+.wh-ice-cube.ice-8 {
+  top: 50% !important;
+}
+
+@keyframes wh-ice-natural-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  45% {
+    translate: 1px -4px;
+  }
+
+  70% {
+    translate: -1px -2px;
+  }
+}
+
+/* Slight reaction when flavour is being added */
+.wh-story-flavour .wh-cup-ice {
+  animation:
+    wh-ice-impact
+    0.72s
+    ease-out;
+}
+
+@keyframes wh-ice-impact {
+  0% {
+    transform: translateY(0);
+  }
+
+  35% {
+    transform: translateY(4px);
+  }
+
+  70% {
+    transform: translateY(-3px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------
+   NATURAL INGREDIENT PLACEMENT
+--------------------------------------------------------- */
+
+.wh-cup-piece {
+  transform-origin: center;
+}
+
+.wh-cup-piece-peach,
+.wh-cup-piece-strawberry,
+.wh-cup-piece-grape,
+.wh-cup-piece-coconut-piece {
+  animation-duration: 6.6s;
+}
+
+.wh-cup-piece-cucumber,
+.wh-cup-piece-lime,
+.wh-cup-piece-citrus {
+  animation-duration: 7.2s;
+}
+
+.wh-cup-piece-mint,
+.wh-cup-piece-pandan {
+  animation-duration: 7.8s;
+}
+
+/* Cucumber and citrus sit against the cup wall more naturally */
+.wh-cup-piece-cucumber:nth-child(odd),
+.wh-cup-piece-lime:nth-child(odd),
+.wh-cup-piece-citrus:nth-child(odd) {
+  left: 2px !important;
+}
+
+.wh-cup-piece-cucumber:nth-child(even),
+.wh-cup-piece-lime:nth-child(even),
+.wh-cup-piece-citrus:nth-child(even) {
+  right: 1px !important;
+}
+
+/* Grapes cluster lower */
+.wh-cup-piece-grape.wh-cup-piece-1 { bottom: 22px !important; }
+.wh-cup-piece-grape.wh-cup-piece-2 { bottom: 45px !important; }
+.wh-cup-piece-grape.wh-cup-piece-3 { bottom: 68px !important; }
+.wh-cup-piece-grape.wh-cup-piece-4 { bottom: 92px !important; }
+.wh-cup-piece-grape.wh-cup-piece-5 { bottom: 118px !important; }
+.wh-cup-piece-grape.wh-cup-piece-6 { bottom: 142px !important; }
+
+/* Mint/pandan sit vertically like the photo */
+.wh-cup-piece-mint .wh-svg-leaf,
+.wh-cup-piece-pandan .wh-svg-pandan {
+  transform:
+    scale(1.1)
+    rotate(7deg) !important;
+}
+
+.wh-cup-piece-pandan.wh-cup-piece-1,
+.wh-cup-piece-pandan.wh-cup-piece-4 {
+  left: 20px !important;
+}
+
+.wh-cup-piece-pandan.wh-cup-piece-2,
+.wh-cup-piece-pandan.wh-cup-piece-5 {
+  right: 12px !important;
+}
+
+/* ---------------------------------------------------------
+   SPARKLING REALISM
+--------------------------------------------------------- */
+
+.wh-sparkle-bubble {
+  opacity: 0.82;
+}
+
+.wh-bubble-xs {
+  width: 3px;
+  height: 3px;
+}
+
+.wh-bubble-sm {
+  width: 5px;
+  height: 5px;
+}
+
+.wh-bubble-md {
+  width: 7px;
+  height: 7px;
+}
+
+.wh-sparkling-field::after {
+  content: "";
+
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 6px;
+
+  height: 12px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255, 255, 255, 0.4),
+      transparent 70%
+    );
+
+  animation:
+    wh-surface-fizz
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+@keyframes wh-surface-fizz {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleX(0.94);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scaleX(1.04);
+  }
+}
+
+/* ---------------------------------------------------------
+   FUNCTION DISSOLVE CLOUD
+--------------------------------------------------------- */
+
+.wh-function-cloud {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.wh-function-cloud span {
+  position: absolute;
+
+  left: 50%;
+  bottom: 18%;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.58),
+      rgba(255, 255, 255, 0.08) 68%,
+      transparent 70%
+    );
+
+  filter: blur(1.5px);
+
+  opacity: 0.35;
+
+  animation:
+    wh-function-cloud-drift
+    3.8s
+    ease-in-out
+    infinite;
+}
+
+.wh-function-cloud span:nth-child(1) { left: 18%; bottom: 16%; animation-delay: -0.0s; }
+.wh-function-cloud span:nth-child(2) { left: 30%; bottom: 24%; animation-delay: -0.16s; }
+.wh-function-cloud span:nth-child(3) { left: 42%; bottom: 18%; animation-delay: -0.32s; }
+.wh-function-cloud span:nth-child(4) { left: 54%; bottom: 30%; animation-delay: -0.48s; }
+.wh-function-cloud span:nth-child(5) { left: 66%; bottom: 20%; animation-delay: -0.64s; }
+.wh-function-cloud span:nth-child(6) { left: 78%; bottom: 34%; animation-delay: -0.8s; }
+.wh-function-cloud span:nth-child(7) { left: 22%; bottom: 42%; animation-delay: -0.96s; }
+.wh-function-cloud span:nth-child(8) { left: 36%; bottom: 52%; animation-delay: -1.12s; }
+.wh-function-cloud span:nth-child(9) { left: 50%; bottom: 44%; animation-delay: -1.28s; }
+.wh-function-cloud span:nth-child(10) { left: 64%; bottom: 58%; animation-delay: -1.44s; }
+.wh-function-cloud span:nth-child(11) { left: 76%; bottom: 48%; animation-delay: -1.6s; }
+.wh-function-cloud span:nth-child(12) { left: 84%; bottom: 64%; animation-delay: -1.76s; }
+.wh-function-cloud span:nth-child(13) { left: 28%; bottom: 70%; animation-delay: -1.92s; }
+.wh-function-cloud span:nth-child(14) { left: 42%; bottom: 78%; animation-delay: -2.08s; }
+.wh-function-cloud span:nth-child(15) { left: 56%; bottom: 68%; animation-delay: -2.24s; }
+.wh-function-cloud span:nth-child(16) { left: 68%; bottom: 82%; animation-delay: -2.4s; }
+.wh-function-cloud span:nth-child(17) { left: 80%; bottom: 74%; animation-delay: -2.56s; }
+.wh-function-cloud span:nth-child(18) { left: 48%; bottom: 90%; animation-delay: -2.72s; }
+
+@keyframes wh-function-cloud-drift {
+  0%,
+  100% {
+    transform:
+      translate3d(0, 7px, 0)
+      scale(0.8);
+
+    opacity: 0.15;
+  }
+
+  50% {
+    transform:
+      translate3d(4px, -12px, 0)
+      scale(1.2);
+
+    opacity: 0.5;
+  }
+}
+
+/* ---------------------------------------------------------
+   CLEANER SERVE STATE
+--------------------------------------------------------- */
+
+.wh-story-serve .wh-cup-wrapper {
+  animation:
+    wh-premium-serve
+    1.15s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    forwards !important;
+}
+
+@keyframes wh-premium-serve {
+  0% {
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1);
+  }
+
+  55% {
+    transform:
+      translateX(-50%)
+      translateY(-4px)
+      scale(1.012);
+  }
+
+  100% {
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1);
+  }
+}
+
+.wh-story-serve .wh-cup-shadow {
+  animation:
+    wh-premium-shadow
+    1.15s
+    ease-out;
+}
+
+@keyframes wh-premium-shadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.78;
+  }
+
+  55% {
+    transform: scaleX(1.08);
+    opacity: 0.56;
+  }
+}
+
+/* ---------------------------------------------------------
+   FINAL RECIPE + REPLAY
+--------------------------------------------------------- */
+
+.wh-final-recipe-card {
+  position: relative;
+  z-index: 55;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-top: 12px;
+  padding: 13px 14px;
+
+  border:
+    1px solid
+    rgba(104, 31, 25, 0.08);
+
+  border-radius: 16px;
+
+  background:
+    rgba(255, 255, 255, 0.42);
+
+  backdrop-filter: blur(9px);
+}
+
+.wh-final-recipe-copy {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.wh-final-recipe-copy small {
+  color:
+    rgba(81, 48, 37, 0.48);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.wh-final-recipe-copy strong {
+  overflow: hidden;
+
+  color: var(--wh-cherry);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  line-height: 1.35;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wh-replay-button {
+  flex: 0 0 auto;
+
+  padding: 8px 11px;
+
+  border:
+    1px solid
+    rgba(104, 31, 25, 0.11);
+
+  border-radius: 999px;
+
+  background:
+    rgba(104, 31, 25, 0.07);
+
+  color: var(--wh-cherry);
+
+  font: inherit;
+  font-size: 9px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.wh-replay-button:hover {
+  transform: translateY(-1px);
+
+  background:
+    rgba(104, 31, 25, 0.12);
+}
+
+/* ---------------------------------------------------------
+   MOBILE
+--------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .wh-final-recipe-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .wh-final-recipe-copy strong {
+    white-space: normal;
+  }
+
+  .wh-replay-button {
+    width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+--------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .wh-cup-ice,
+  .wh-ice-cube,
+  .wh-function-cloud span,
+  .wh-sparkling-field::after,
+  .wh-story-serve .wh-cup-wrapper,
+  .wh-story-serve .wh-cup-shadow {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

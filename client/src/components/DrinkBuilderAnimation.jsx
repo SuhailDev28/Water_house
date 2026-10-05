@@ -363,6 +363,7 @@ export default function DrinkBuilderAnimation({
   const followCardRef = useRef(null);
 
   const [followOffset, setFollowOffset] = useState(0);
+  const [replayNonce, setReplayNonce] = useState(0);
 
   const previousBaseRef = useRef(base);
   const previousFlavourRef = useRef(flavour);
@@ -685,6 +686,57 @@ export default function DrinkBuilderAnimation({
     };
   }, []);
 
+  const replayPreparation = () => {
+    if (!hasBase) return;
+
+    clearTimers();
+    setIsFinished(false);
+
+    setReplayNonce((value) => value + 1);
+
+    runAction(
+      {
+        type: "base",
+        base,
+      },
+      `Pouring ${base.toLowerCase()} water.`,
+    );
+
+    if (!hasFlavour) return;
+
+    finishTimerRef.current = setTimeout(() => {
+      runAction(
+        {
+          type: "flavour",
+          flavour,
+        },
+        `Adding ${flavour}.`,
+      );
+
+      serveTimerRef.current = setTimeout(() => {
+        const selectedBoost = boosts[0];
+
+        if (selectedBoost) {
+          runAction(
+            {
+              type: "boost",
+              boost: selectedBoost,
+            },
+            `Adding ${selectedBoost}.`,
+          );
+
+          setTimeout(() => {
+            scheduleFinish("boost");
+          }, ACTION_DURATION.boost + 120);
+
+          return;
+        }
+
+        scheduleFinish("flavour");
+      }, ACTION_DURATION.flavour + 180);
+    }, ACTION_DURATION.base + 220);
+  };
+
   const progress = useMemo(() => {
     if (!hasBase) return 0;
     if (!hasFlavour) return 33;
@@ -753,7 +805,7 @@ export default function DrinkBuilderAnimation({
 
           {action && (
             <div
-              key={`${actionKey}-${action.type}-${action.boost || action.flavour || action.base || ""}`}
+              key={`${replayNonce}-${actionKey}-${action.type}-${action.boost || action.flavour || action.base || ""}`}
             >
               {action.type === "base" && (
                 <BasePourAnimation base={action.base} />
@@ -850,7 +902,11 @@ export default function DrinkBuilderAnimation({
                       ].map((ingredient, index) => (
                         <div
                           key={`${ingredient.type}-${index}`}
-                          className={`wh-cup-piece wh-cup-piece-${index + 1}`}
+                          className={[
+                            "wh-cup-piece",
+                            `wh-cup-piece-${index + 1}`,
+                            `wh-cup-piece-${ingredient.type}`,
+                          ].join(" ")}
                         >
                           <IngredientShape type={ingredient.type} />
                         </div>
@@ -859,20 +915,31 @@ export default function DrinkBuilderAnimation({
                   )}
 
                   {boosts.length > 0 && (
-                    <div className="wh-function-dissolve">
-                      {boosts.slice(0, 6).map((boost, index) => (
-                        <span
-                          key={boost}
-                          className={[
-                            "wh-function-dot",
-                            `wh-function-dot-${index + 1}`,
-                            `wh-active-function-${
-                              BOOSTS[boost]?.className || ""
-                            }`,
-                          ].join(" ")}
-                        />
-                      ))}
-                    </div>
+                    <>
+                      <div className="wh-function-cloud" aria-hidden="true">
+                        {Array.from({ length: 18 }).map((_, index) => (
+                          <span
+                            key={`cloud-${index}`}
+                            style={{ "--cloud-index": index }}
+                          />
+                        ))}
+                      </div>
+
+                      <div className="wh-function-dissolve">
+                        {boosts.slice(0, 6).map((boost, index) => (
+                          <span
+                            key={boost}
+                            className={[
+                              "wh-function-dot",
+                              `wh-function-dot-${index + 1}`,
+                              `wh-active-function-${
+                                BOOSTS[boost]?.className || ""
+                              }`,
+                            ].join(" ")}
+                          />
+                        ))}
+                      </div>
+                    </>
                   )}
                 </div>
               )}
@@ -956,6 +1023,25 @@ export default function DrinkBuilderAnimation({
                 {boost}
               </span>
             ))}
+          </div>
+        )}
+
+        {hasFlavour && (
+          <div className="wh-final-recipe-card">
+            <div className="wh-final-recipe-copy">
+              <small>YOUR WATER</small>
+              <strong>
+                {[base, flavour, ...boosts].filter(Boolean).join(" · ")}
+              </strong>
+            </div>
+
+            <button
+              type="button"
+              className="wh-replay-button"
+              onClick={replayPreparation}
+            >
+              Replay preparation
+            </button>
           </div>
         )}
       </div>
