@@ -869,3 +869,130 @@
     transition: none;
   }
 }
+
+
+/* =========================================================
+   WATER HOUSE — COMMERCIAL VIDEO HERO
+========================================================= */
+
+.wh-menu-hero-video-wrap {
+  position: relative;
+
+  width: 100%;
+  min-height: 620px;
+
+  overflow: hidden;
+
+  background: var(--wh-coco);
+
+  isolation: isolate;
+}
+
+.wh-menu-hero-video {
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: center;
+
+  background: var(--wh-coco);
+}
+
+.wh-menu-video-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(50, 30, 20, 0.01) 0%,
+      rgba(50, 30, 20, 0) 55%,
+      rgba(50, 30, 20, 0.14) 100%
+    );
+}
+
+.wh-menu-hero-video-wrap .wh-menu-image-label {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 28px;
+  right: 28px;
+  bottom: 24px;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 980px) {
+  .wh-menu-hero-video-wrap {
+    min-height: 520px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+  .wh-menu-hero-video-wrap {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+
+    border-radius: 0;
+  }
+
+  .wh-menu-hero-video {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .wh-menu-hero-video-wrap .wh-menu-image-label {
+    left: 18px;
+    right: 18px;
+    bottom: 16px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+  .wh-menu-hero-video-wrap {
+    aspect-ratio: 16 / 10;
+  }
+
+  .wh-menu-hero-video {
+    object-position: center center;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION FALLBACK
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .wh-menu-hero-video {
+    display: none;
+  }
+
+  .wh-menu-hero-video-wrap {
+    background:
+      url("/flavours.jpg")
+      center / cover
+      no-repeat;
+  }
+}

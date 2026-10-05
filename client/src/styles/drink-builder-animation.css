@@ -1,0 +1,6207 @@
+/* =========================================================
+
+   WATER HOUSE â€” PERSISTENT LIVE DRINK BUILDER
+
+\========================================================= */
+
+
+
+:root {
+
+  --wh-cherry: #6b1714;
+
+  --wh-peach: #e9a876;
+
+  --wh-coco: #eed8c4;
+
+  --wh-matcha: #a9b59c;
+
+  --wh-leaf: #364d3e;
+
+
+
+  --wh-cream: #f5e7d8;
+
+  --wh-soft-cream: #f9f0e7;
+
+  --wh-brown: #513025;
+
+
+
+  --wh-border: rgba(84, 49, 37, 0.1);
+
+}
+
+
+
+/* =========================================================
+
+   MAIN SHELL
+
+\========================================================= */
+
+
+
+.wh-live-drink {
+
+  position: sticky;
+
+  top: 105px;
+
+
+
+  width: 100%;
+
+
+
+  padding: 28px;
+
+
+
+  border-radius: 30px;
+
+
+
+  overflow: hidden;
+
+
+
+  background:
+
+    radial-gradient(
+
+      circle at 50% 38%,
+
+      rgba(255, 255, 255, 0.42),
+
+      transparent 38%
+
+    ),
+
+    linear-gradient(
+
+      145deg,
+
+      #f6e8d8 0%,
+
+      #efd8c4 100%
+
+    );
+
+
+
+  box-shadow:
+
+    0 30px 80px
+
+      rgba(69, 39, 27, 0.08),
+
+    inset 0 0 0 1px
+
+      rgba(97, 56, 41, 0.08);
+
+}
+
+
+
+/* =========================================================
+
+   HEADER
+
+\========================================================= */
+
+
+
+.wh-live-drink-header {
+
+  position: relative;
+
+
+
+  z-index: 40;
+
+}
+
+
+
+.wh-live-kicker {
+
+  display: block;
+
+
+
+  margin-bottom: 8px;
+
+
+
+  color: var(--wh-cherry);
+
+
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.19em;
+
+
+
+  text-transform: uppercase;
+
+}
+
+
+
+.wh-live-drink-header h3 {
+
+  margin: 0;
+
+
+
+  color: var(--wh-cherry);
+
+
+
+  font-size:
+
+    clamp(
+
+      30px,
+
+      3vw,
+
+      43px
+
+    );
+
+
+
+  font-weight: 600;
+
+
+
+  line-height: 0.94;
+
+}
+
+
+
+.wh-live-drink-header h3 em {
+
+  font-weight: 400;
+
+}
+
+
+
+.wh-live-drink-header p {
+
+  margin:
+
+    12px
+
+    0
+
+    0;
+
+
+
+  color:
+
+    rgba(78, 44, 33, 0.62);
+
+
+
+  font-size: 12px;
+
+}
+
+
+
+/* =========================================================
+
+   SCENE
+
+\========================================================= */
+
+
+
+.wh-live-scene {
+
+  position: relative;
+
+
+
+  width: 100%;
+
+  height: 420px;
+
+
+
+  overflow: hidden;
+
+
+
+  isolation: isolate;
+
+}
+
+
+
+.wh-live-light {
+
+  position: absolute;
+
+
+
+  z-index: 0;
+
+
+
+  top: 8%;
+
+  left: 50%;
+
+
+
+  width: 340px;
+
+  height: 340px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    radial-gradient(
+
+      circle,
+
+      rgba(255, 255, 255, 0.86) 0%,
+
+      rgba(255, 255, 255, 0.3) 43%,
+
+      transparent 73%
+
+    );
+
+
+
+  filter: blur(5px);
+
+}
+
+
+
+.wh-live-floor {
+
+  position: absolute;
+
+
+
+  z-index: 1;
+
+
+
+  bottom: 18px;
+
+  left: 50%;
+
+
+
+  width: 300px;
+
+  height: 48px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    radial-gradient(
+
+      ellipse,
+
+      rgba(76, 44, 29, 0.16),
+
+      transparent 69%
+
+    );
+
+
+
+  filter: blur(7px);
+
+}
+
+
+
+/* =========================================================
+
+   EVENT LAYER
+
+\========================================================= */
+
+
+
+.wh-animation-event-layer {
+
+  position: absolute;
+
+
+
+  inset: 0;
+
+
+
+  z-index: 30;
+
+
+
+  pointer-events: none;
+
+}
+
+
+
+/* =========================================================
+
+   CUP
+
+\========================================================= */
+
+
+
+.wh-cup-wrapper {
+
+  position: absolute;
+
+
+
+  z-index: 10;
+
+
+
+  left: 50%;
+
+  bottom: 42px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+}
+
+
+
+.wh-water-house-cup {
+
+  position: relative;
+
+
+
+  width: 166px;
+
+  height: 286px;
+
+
+
+  overflow: hidden;
+
+
+
+  clip-path:
+
+    polygon(
+
+      5% 0,
+
+      95% 0,
+
+      89% 100%,
+
+      11% 100%
+
+    );
+
+
+
+  border-radius:
+
+    10px
+
+    10px
+
+    25px
+
+    25px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(255, 255, 255, 0.72);
+
+
+
+  background:
+
+    linear-gradient(
+
+      100deg,
+
+      rgba(255, 255, 255, 0.48),
+
+      rgba(255, 255, 255, 0.12) 34%,
+
+      rgba(255, 255, 255, 0.16) 68%,
+
+      rgba(255, 255, 255, 0.42)
+
+    );
+
+
+
+  box-shadow:
+
+    inset 8px 0 16px
+
+      rgba(255, 255, 255, 0.34),
+
+    inset -7px 0 17px
+
+      rgba(95, 60, 40, 0.05),
+
+    0 24px 40px
+
+      rgba(69, 39, 27, 0.11);
+
+
+
+  backdrop-filter:
+
+    blur(2px);
+
+}
+
+
+
+.wh-cup-rim {
+
+  position: absolute;
+
+
+
+  z-index: 30;
+
+
+
+  top: 2px;
+
+  left: 5px;
+
+  right: 5px;
+
+
+
+  height: 13px;
+
+
+
+  border-radius: 50%;
+
+
+
+  border-top:
+
+    2px solid
+
+    rgba(255, 255, 255, 0.92);
+
+
+
+  border-bottom:
+
+    1px solid
+
+    rgba(73, 42, 30, 0.08);
+
+}
+
+
+
+/* =========================================================
+
+   CUP LOGO
+
+\========================================================= */
+
+
+
+.wh-cup-logo {
+
+  position: absolute;
+
+
+
+  z-index: 50;
+
+
+
+  left: 50%;
+
+  top: 52%;
+
+
+
+  transform:
+
+    translate(-50%, -50%);
+
+
+
+  display: flex;
+
+  flex-direction: column;
+
+
+
+  color: var(--wh-cherry);
+
+
+
+  font-family:
+
+    Georgia,
+
+    "Times New Roman",
+
+    serif;
+
+
+
+  font-size: 23px;
+
+
+
+  line-height: 0.68;
+
+
+
+  text-align: center;
+
+
+
+  pointer-events: none;
+
+}
+
+
+
+/* =========================================================
+
+   REFLECTION
+
+\========================================================= */
+
+
+
+.wh-cup-reflection {
+
+  position: absolute;
+
+
+
+  z-index: 40;
+
+
+
+  border-radius: 999px;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.52);
+
+
+
+  pointer-events: none;
+
+}
+
+
+
+.wh-cup-reflection-one {
+
+  top: 24px;
+
+  left: 19px;
+
+
+
+  width: 7px;
+
+  height: 178px;
+
+}
+
+
+
+.wh-cup-reflection-two {
+
+  top: 38px;
+
+  right: 19px;
+
+
+
+  width: 3px;
+
+  height: 95px;
+
+
+
+  opacity: 0.44;
+
+}
+
+
+
+/* =========================================================
+
+   CUP SHADOW
+
+\========================================================= */
+
+
+
+.wh-cup-shadow {
+
+  width: 186px;
+
+  height: 22px;
+
+
+
+  margin:
+
+    12px
+
+    auto
+
+    0;
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    rgba(66, 37, 25, 0.15);
+
+
+
+  filter: blur(10px);
+
+}
+
+
+
+/* =========================================================
+
+   LIQUID
+
+\========================================================= */
+
+
+
+.wh-drink-liquid {
+
+  position: absolute;
+
+
+
+  z-index: 5;
+
+
+
+  left: 6px;
+
+  right: 6px;
+
+  bottom: 5px;
+
+
+
+  height: 78%;
+
+
+
+  overflow: hidden;
+
+
+
+  border-radius:
+
+    8px
+
+    8px
+
+    21px
+
+    21px;
+
+
+
+  transition:
+
+background
+
+      0.85s
+
+      cubic-bezier(
+
+        0.22,
+
+        1,
+
+        0.36,
+
+        1
+
+      ),
+
+    filter 0.6s ease,
+
+    opacity 0.4s ease;
+
+}
+
+
+
+/* =========================================================
+
+   BASE COLORS
+
+\========================================================= */
+
+
+
+.wh-drink-base-still {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(229, 243, 239, 0.76),
+
+      rgba(197, 221, 215, 0.82)
+
+    );
+
+}
+
+
+
+.wh-drink-base-sparkling {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(235, 247, 244, 0.78),
+
+      rgba(196, 225, 217, 0.84)
+
+    );
+
+}
+
+
+
+.wh-drink-base-coconut {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(247, 243, 223, 0.96),
+
+      rgba(225, 216, 185, 0.96)
+
+    );
+
+}
+
+
+
+/* =========================================================
+
+   FLAVOUR TONES
+
+\========================================================= */
+
+
+
+.wh-drink-tone-peach {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(247, 218, 193, 0.84),
+
+      rgba(235, 184, 149, 0.85)
+
+    );
+
+}
+
+
+
+.wh-drink-tone-strawberry {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(244, 189, 179, 0.84),
+
+      rgba(221, 136, 125, 0.83)
+
+    );
+
+}
+
+
+
+.wh-drink-tone-yuzu {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(240, 231, 160, 0.84),
+
+      rgba(209, 215, 137, 0.84)
+
+    );
+
+}
+
+
+
+.wh-drink-tone-cucumber {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(213, 231, 189, 0.86),
+
+      rgba(172, 210, 157, 0.85)
+
+    );
+
+}
+
+
+
+.wh-drink-tone-grape {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(219, 230, 179, 0.86),
+
+      rgba(181, 207, 145, 0.85)
+
+    );
+
+}
+
+
+
+.wh-drink-tone-pandan {
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      rgba(231, 230, 198, 0.91),
+
+      rgba(189, 209, 162, 0.89)
+
+    );
+
+}
+
+
+
+/* =========================================================
+
+   WATER SURFACE
+
+\========================================================= */
+
+
+
+.wh-drink-surface {
+
+  position: absolute;
+
+
+
+  z-index: 12;
+
+
+
+  top: -5px;
+
+  left: -5%;
+
+
+
+  width: 110%;
+
+  height: 14px;
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.39);
+
+
+
+  animation:
+
+    wh-water-wave
+
+    2.7s
+
+    ease-in-out
+
+    infinite;
+
+}
+
+
+
+/* =========================================================
+
+   CARAFE
+
+\========================================================= */
+
+
+
+.wh-live-source {
+
+  position: absolute;
+
+
+
+  top: 6px;
+
+  left: 50%;
+
+
+
+  z-index: 35;
+
+}
+
+
+
+.wh-brand-carafe {
+
+  position: absolute;
+
+
+
+  left: -82px;
+
+  top: -18px;
+
+
+
+  width: 65px;
+
+  height: 92px;
+
+
+
+  transform-origin:
+
+    84%
+
+    78%;
+
+
+
+  animation:
+
+    wh-carafe-tip
+
+    1.35s
+
+    ease-out
+
+    forwards;
+
+}
+
+
+
+.wh-carafe-body {
+
+  position: absolute;
+
+
+
+  left: 0;
+
+  bottom: 0;
+
+
+
+  width: 62px;
+
+  height: 70px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(87, 74, 65, 0.17);
+
+
+
+  border-radius:
+
+    10px
+
+    10px
+
+    19px
+
+    19px;
+
+
+
+  background:
+
+    linear-gradient(
+
+      100deg,
+
+      rgba(255, 255, 255, 0.79),
+
+      rgba(206, 226, 220, 0.37),
+
+      rgba(255, 255, 255, 0.63)
+
+    );
+
+
+
+  box-shadow:
+
+    inset 5px 0 8px
+
+      rgba(255, 255, 255, 0.31);
+
+}
+
+
+
+.wh-carafe-neck {
+
+  position: absolute;
+
+
+
+  z-index: 10;
+
+
+
+  right: -12px;
+
+  top: 13px;
+
+
+
+  width: 30px;
+
+  height: 20px;
+
+
+
+  border-radius:
+
+    4px
+
+    12px
+
+    12px
+
+    4px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(100, 81, 66, 0.11);
+
+
+
+  background:
+
+    rgba(229, 239, 236, 0.84);
+
+}
+
+
+
+.wh-carafe-shine {
+
+  position: absolute;
+
+
+
+  top: 11px;
+
+  left: 13px;
+
+
+
+  width: 5px;
+
+  height: 44px;
+
+
+
+  border-radius: 999px;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.69);
+
+}
+
+
+
+/* =========================================================
+
+   COCONUT
+
+\========================================================= */
+
+
+
+.wh-brand-coconut {
+
+  position: absolute;
+
+
+
+  top: -27px;
+
+  left: -82px;
+
+
+
+  width: 90px;
+
+  height: 90px;
+
+
+
+  transform-origin:
+
+    80%
+
+    70%;
+
+
+
+  animation:
+
+    wh-coconut-tip
+
+    1.35s
+
+    ease-out
+
+    forwards;
+
+}
+
+
+
+.wh-coconut-outer {
+
+  position: absolute;
+
+
+
+  width: 84px;
+
+  height: 65px;
+
+
+
+  overflow: hidden;
+
+
+
+  transform:
+
+    rotate(-7deg);
+
+
+
+  border-radius:
+
+    50%
+
+    50%
+
+    44%
+
+    48%;
+
+
+
+  background:
+
+    linear-gradient(
+
+      145deg,
+
+      #805b40,
+
+      #503527
+
+    );
+
+
+
+  box-shadow:
+
+    inset -7px -5px 12px
+
+      rgba(40, 25, 18, 0.3);
+
+}
+
+
+
+.wh-coconut-inner {
+
+  position: absolute;
+
+
+
+  top: 8px;
+
+  left: 9px;
+
+
+
+  width: 65px;
+
+  height: 45px;
+
+
+
+  border-radius:
+
+    50%
+
+    50%
+
+    44%
+
+    48%;
+
+
+
+  background:
+
+    linear-gradient(
+
+      150deg,
+
+      #fffcef,
+
+      #e7dfc3
+
+    );
+
+}
+
+
+
+/* =========================================================
+
+   STREAM
+
+\========================================================= */
+
+
+
+.wh-live-stream {
+
+  position: absolute;
+
+
+
+  top: 48px;
+
+  left: -8px;
+
+
+
+  width: 8px;
+
+  height: 204px;
+
+
+
+  transform-origin: top;
+
+
+
+  border-radius: 999px;
+
+
+
+  background:
+
+    linear-gradient(
+
+      90deg,
+
+      rgba(255, 255, 255, 0.57),
+
+      rgba(186, 223, 216, 0.93),
+
+      rgba(255, 255, 255, 0.58)
+
+    );
+
+
+
+  box-shadow:
+
+    0 0 7px
+
+      rgba(215, 240, 232, 0.36);
+
+
+
+  animation:
+
+    wh-stream
+
+    1.18s
+
+    ease-out
+
+    forwards;
+
+}
+
+
+
+.wh-live-stream-coconut {
+
+  width: 10px;
+
+
+
+  background:
+
+    linear-gradient(
+
+      90deg,
+
+      rgba(255, 255, 255, 0.64),
+
+      rgba(242, 237, 207, 0.97),
+
+      rgba(255, 255, 255, 0.6)
+
+    );
+
+}
+
+
+
+/* =========================================================
+
+   POUR SPLASH
+
+\========================================================= */
+
+
+
+.wh-pour-splash {
+
+  position: absolute;
+
+
+
+  z-index: 34;
+
+
+
+  top: 171px;
+
+  left: 50%;
+
+
+
+  width: 70px;
+
+  height: 25px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+
+
+  animation:
+
+    wh-splash-fade
+
+    1.1s
+
+    ease-out
+
+    forwards;
+
+}
+
+
+
+.wh-pour-splash span {
+
+  position: absolute;
+
+
+
+  left: 50%;
+
+  top: 50%;
+
+
+
+  width: 5px;
+
+  height: 13px;
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.7);
+
+}
+
+
+
+.wh-pour-splash span:nth-child(1) {
+
+  transform:
+
+    translate(-24px, -4px)
+
+    rotate(-38deg);
+
+}
+
+
+
+.wh-pour-splash span:nth-child(2) {
+
+  transform:
+
+    translate(-2px, -11px);
+
+}
+
+
+
+.wh-pour-splash span:nth-child(3) {
+
+  transform:
+
+    translate(19px, -4px)
+
+    rotate(38deg);
+
+}
+
+
+
+/* =========================================================
+
+   FLAVOUR FALL
+
+\========================================================= */
+
+
+
+.wh-live-flavour-rain {
+
+  position: absolute;
+
+
+
+  z-index: 36;
+
+
+
+  top: 6px;
+
+  left: 50%;
+
+
+
+  width: 220px;
+
+  height: 280px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+}
+
+
+
+.wh-live-falling-piece {
+
+  position: absolute;
+
+
+
+  opacity: 0;
+
+
+
+  animation:
+
+    wh-drop-piece
+
+    1.3s
+
+    ease-in
+
+    forwards;
+
+}
+
+
+
+.wh-live-falling-piece.piece-one {
+
+  top: -15px;
+
+  left: 33px;
+
+
+
+  animation-delay: 0s;
+
+}
+
+
+
+.wh-live-falling-piece.piece-two {
+
+  top: -36px;
+
+  left: 95px;
+
+
+
+  animation-delay: 0.14s;
+
+}
+
+
+
+.wh-live-falling-piece.piece-three {
+
+  top: -17px;
+
+  left: 151px;
+
+
+
+  animation-delay: 0.28s;
+
+}
+
+
+
+/* =========================================================
+
+   FLAVOUR SPLASH
+
+\========================================================= */
+
+
+
+.wh-flavour-splash {
+
+  position: absolute;
+
+
+
+  z-index: 35;
+
+
+
+  top: 175px;
+
+  left: 50%;
+
+
+
+  width: 90px;
+
+  height: 35px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+}
+
+
+
+.wh-flavour-splash span {
+
+  position: absolute;
+
+
+
+  top: 12px;
+
+
+
+  width: 35px;
+
+  height: 10px;
+
+
+
+  border-top:
+
+    2px solid
+
+    rgba(255, 255, 255, 0.55);
+
+
+
+  border-radius: 50%;
+
+
+
+  opacity: 0;
+
+
+
+  animation:
+
+    wh-flavour-ripple
+
+    0.8s
+
+    0.6s
+
+    ease-out
+
+    forwards;
+
+}
+
+
+
+.wh-flavour-splash span:first-child {
+
+  left: 5px;
+
+}
+
+
+
+.wh-flavour-splash span:last-child {
+
+  right: 5px;
+
+
+
+  animation-delay: 0.72s;
+
+}
+
+
+
+/* =========================================================
+
+   SVG-LIKE INGREDIENTS
+
+\========================================================= */
+
+
+
+.wh-svg-ingredient {
+
+  position: relative;
+
+
+
+  display: inline-block;
+
+}
+
+
+
+/* PEACH */
+
+
+
+.wh-svg-peach {
+
+  width: 40px;
+
+  height: 31px;
+
+
+
+  transform:
+
+    rotate(-12deg);
+
+
+
+  border:
+
+    3px solid
+
+    rgba(203, 91, 58, 0.52);
+
+
+
+  border-radius:
+
+    70%
+
+    20%
+
+    70%
+
+    20%;
+
+
+
+  background:
+
+    linear-gradient(
+
+      140deg,
+
+      #facb9b,
+
+      #eca574
+
+    );
+
+}
+
+
+
+.wh-peach-skin {
+
+  position: absolute;
+
+
+
+  right: -2px;
+
+  top: 2px;
+
+
+
+  width: 5px;
+
+  height: 26px;
+
+
+
+  border-radius: 999px;
+
+
+
+  background: #d57452;
+
+}
+
+
+
+/* STRAWBERRY */
+
+
+
+.wh-svg-strawberry {
+
+  width: 33px;
+
+  height: 40px;
+
+
+
+  transform:
+
+    rotate(8deg);
+
+
+
+  border-radius:
+
+    50%
+
+    50%
+
+    50%
+
+    50% / 40%
+
+    40%
+
+    65%
+
+    65%;
+
+
+
+  background:
+
+    linear-gradient(
+
+      160deg,
+
+      #e85f56,
+
+      #bd3937
+
+    );
+
+}
+
+
+
+.wh-strawberry-leaf {
+
+  position: absolute;
+
+
+
+  left: 8px;
+
+  top: -5px;
+
+
+
+  width: 18px;
+
+  height: 10px;
+
+
+
+  transform:
+
+    rotate(-13deg);
+
+
+
+  border-radius:
+
+    50%
+
+    10%
+
+    50%
+
+    10%;
+
+
+
+  background:
+
+    #56734d;
+
+}
+
+
+
+.wh-strawberry-seeds {
+
+  position: absolute;
+
+
+
+  inset: 5px;
+
+
+
+  background:
+
+    radial-gradient(
+
+      circle,
+
+      rgba(255, 234, 175, 0.9)
+
+      0 1px,
+
+      transparent 1.5px
+
+    );
+
+
+
+  background-size:
+
+    7px
+
+    7px;
+
+}
+
+
+
+/* CITRUS */
+
+
+
+.wh-svg-citrus,
+
+.wh-svg-lime,
+
+.wh-svg-cucumber {
+
+  width: 38px;
+
+  height: 38px;
+
+
+
+  border:
+
+    3px solid
+
+    rgba(255, 255, 255, 0.48);
+
+
+
+  border-radius: 50%;
+
+}
+
+
+
+.wh-svg-citrus {
+
+  background:
+
+    radial-gradient(
+
+      circle,
+
+      #fff3b9 0 28%,
+
+      #eadb67 29% 68%,
+
+      #cbbb52 69%
+
+    );
+
+}
+
+
+
+.wh-citrus-core,
+
+.wh-lime-core,
+
+.wh-cucumber-center {
+
+  position: absolute;
+
+
+
+  inset: 8px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(255, 255, 255, 0.65);
+
+
+
+  border-radius: 50%;
+
+}
+
+
+
+.wh-svg-lime {
+
+  background:
+
+    radial-gradient(
+
+      circle,
+
+      #dff1a2 0 30%,
+
+      #a9cf63 31% 68%,
+
+      #6c9948 69%
+
+    );
+
+}
+
+
+
+.wh-svg-cucumber {
+
+  background:
+
+    radial-gradient(
+
+      circle,
+
+      #deedc0 0 28%,
+
+      #b5d58b 29% 66%,
+
+      #668b4b 67%
+
+    );
+
+}
+
+
+
+/* LEAF */
+
+
+
+.wh-svg-leaf,
+
+.wh-svg-pandan {
+
+  width: 22px;
+
+  height: 46px;
+
+
+
+  transform:
+
+    rotate(24deg);
+
+
+
+  border-radius:
+
+    90%
+
+    5%
+
+    90%
+
+    5%;
+
+
+
+  background:
+
+    linear-gradient(
+
+      130deg,
+
+      #78926b,
+
+      #3e654b
+
+    );
+
+}
+
+
+
+.wh-svg-pandan {
+
+  width: 16px;
+
+  height: 60px;
+
+
+
+  background:
+
+    linear-gradient(
+
+      130deg,
+
+      #8aa171,
+
+      #426347
+
+    );
+
+}
+
+
+
+/* GRAPE */
+
+
+
+.wh-svg-grape {
+
+  width: 42px;
+
+  height: 45px;
+
+}
+
+
+
+.wh-svg-grape span {
+
+  position: absolute;
+
+
+
+  width: 18px;
+
+  height: 18px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(92, 119, 60, 0.17);
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    linear-gradient(
+
+      145deg,
+
+      #d2df8d,
+
+      #9dbc62
+
+    );
+
+}
+
+
+
+.wh-svg-grape span:nth-child(1) {
+
+  left: 10px;
+
+  top: 1px;
+
+}
+
+
+
+.wh-svg-grape span:nth-child(2) {
+
+  left: 2px;
+
+  top: 15px;
+
+}
+
+
+
+.wh-svg-grape span:nth-child(3) {
+
+  left: 19px;
+
+  top: 15px;
+
+}
+
+
+
+.wh-svg-grape span:nth-child(4) {
+
+  left: 11px;
+
+  top: 28px;
+
+}
+
+
+
+/* COCONUT */
+
+
+
+.wh-svg-coconut-piece {
+
+  width: 38px;
+
+  height: 25px;
+
+
+
+  overflow: hidden;
+
+
+
+  transform:
+
+    rotate(-10deg);
+
+
+
+  border-radius:
+
+    60%
+
+    20%
+
+    60%
+
+    20%;
+
+
+
+  background: #79563f;
+
+}
+
+
+
+.wh-svg-coconut-piece span {
+
+  position: absolute;
+
+
+
+  inset:
+
+    4px
+
+    3px
+
+    5px
+
+    4px;
+
+
+
+  border-radius: inherit;
+
+
+
+  background: #fff9df;
+
+}
+
+
+
+/* =========================================================
+
+   PERSISTENT INGREDIENTS
+
+\========================================================= */
+
+
+
+.wh-cup-ingredients {
+
+  position: absolute;
+
+
+
+  inset: 0;
+
+
+
+  z-index: 10;
+
+
+
+  pointer-events: none;
+
+
+
+  animation:
+
+    wh-flavour-enter
+
+    0.65s
+
+    cubic-bezier(
+
+      0.22,
+
+      1,
+
+      0.36,
+
+      1
+
+    );
+
+}
+
+
+
+.wh-cup-piece {
+
+  position: absolute;
+
+
+
+  transition:
+
+    opacity 0.4s ease,
+
+    transform 0.6s ease;
+
+
+
+  animation:
+
+    wh-piece-float
+
+    5s
+
+    ease-in-out
+
+    infinite;
+
+}
+
+
+
+.wh-cup-piece-1 {
+
+  left: 17px;
+
+  bottom: 28px;
+
+}
+
+
+
+.wh-cup-piece-2 {
+
+  right: 11px;
+
+  bottom: 67px;
+
+
+
+  animation-delay: -1.4s;
+
+}
+
+
+
+.wh-cup-piece-3 {
+
+  left: 58px;
+
+  bottom: 110px;
+
+
+
+  animation-delay: -2.6s;
+
+}
+
+
+
+.wh-cup-piece .wh-svg-ingredient {
+
+  transform:
+
+    scale(0.74);
+
+}
+
+
+
+/* =========================================================
+
+   SPARKLING
+
+\========================================================= */
+
+
+
+.wh-sparkling-field {
+
+  position: absolute;
+
+
+
+  inset: 0;
+
+
+
+  z-index: 9;
+
+
+
+  overflow: hidden;
+
+}
+
+
+
+.wh-sparkle-bubble {
+
+  position: absolute;
+
+
+
+  bottom: -10px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(255, 255, 255, 0.88);
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.1);
+
+
+
+  animation-name:
+
+    wh-bubble-rise;
+
+
+
+  animation-timing-function:
+
+    linear;
+
+
+
+  animation-iteration-count:
+
+    infinite;
+
+}
+
+
+
+.wh-bubble-xs {
+
+  width: 4px;
+
+  height: 4px;
+
+}
+
+
+
+.wh-bubble-sm {
+
+  width: 6px;
+
+  height: 6px;
+
+}
+
+
+
+.wh-bubble-md {
+
+  width: 8px;
+
+  height: 8px;
+
+}
+
+
+
+/* =========================================================
+
+   FUNCTION SACHETS
+
+\========================================================= */
+
+
+
+.wh-function-sachet {
+
+  position: absolute;
+
+
+
+  z-index: 40;
+
+
+
+  top: 45px;
+
+  left: calc(50% - 113px);
+
+
+
+  width: 150px;
+
+  height: 35px;
+
+
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+
+
+  gap: 8px;
+
+
+
+  padding:
+
+    0
+
+    13px;
+
+
+
+  transform-origin:
+
+    100%
+
+    50%;
+
+
+
+  border-radius:
+
+    5px
+
+    9px
+
+    9px
+
+    5px;
+
+
+
+  color: var(--wh-cherry);
+
+
+
+  box-shadow:
+
+    0 8px 15px
+
+      rgba(68, 43, 29, 0.12);
+
+
+
+  animation:
+
+    wh-sachet-tip
+
+    1.18s
+
+    ease-out
+
+    forwards;
+
+}
+
+
+
+.wh-function-logo {
+
+  font-family:
+
+    Georgia,
+
+    serif;
+
+
+
+  font-size: 13px;
+
+}
+
+
+
+.wh-function-name {
+
+  font-size: 6px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.11em;
+
+}
+
+
+
+/* FUNCTIONS */
+
+
+
+.wh-function-electrolytes {
+
+  background: #efe0ce;
+
+}
+
+
+
+.wh-function-magnesium {
+
+  background: #acb9a2;
+
+}
+
+
+
+.wh-function-creatine {
+
+  background: #d6baa5;
+
+}
+
+
+
+.wh-function-collagen {
+
+  background: #e3b3b1;
+
+}
+
+
+
+.wh-function-caffeine {
+
+  background: #a77d64;
+
+}
+
+
+
+.wh-function-theanine {
+
+  background: #c6b2cc;
+
+}
+
+
+
+/* =========================================================
+
+   FUNCTION POWDER
+
+\========================================================= */
+
+
+
+.wh-function-powder {
+
+  position: absolute;
+
+
+
+  z-index: 38;
+
+
+
+  top: 82px;
+
+  left: 50%;
+
+
+
+  width: 90px;
+
+  height: 190px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+}
+
+
+
+.wh-function-powder span {
+
+  position: absolute;
+
+
+
+  top: 0;
+
+
+
+  width: 3px;
+
+  height: 3px;
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    rgba(247, 240, 216, 0.96);
+
+
+
+  animation:
+
+    wh-powder-drop
+
+    1s
+
+    ease-in
+
+    forwards;
+
+}
+
+
+
+.wh-powder-position-1 {
+
+  left: 10%;
+
+}
+
+
+
+.wh-powder-position-2 {
+
+  left: 20%;
+
+}
+
+
+
+.wh-powder-position-3 {
+
+  left: 30%;
+
+}
+
+
+
+.wh-powder-position-4 {
+
+  left: 40%;
+
+}
+
+
+
+.wh-powder-position-5 {
+
+  left: 50%;
+
+}
+
+
+
+.wh-powder-position-6 {
+
+  left: 60%;
+
+}
+
+
+
+.wh-powder-position-7 {
+
+  left: 70%;
+
+}
+
+
+
+.wh-powder-position-8 {
+
+  left: 80%;
+
+}
+
+
+
+.wh-powder-position-9 {
+
+  left: 90%;
+
+}
+
+
+
+/* =========================================================
+
+   PERSISTENT FUNCTIONS
+
+\========================================================= */
+
+
+
+.wh-function-dissolve {
+
+  position: absolute;
+
+
+
+  inset: 0;
+
+
+
+  z-index: 11;
+
+
+
+  pointer-events: none;
+
+}
+
+
+
+.wh-function-dot {
+
+  position: absolute;
+
+
+
+  width: 5px;
+
+  height: 5px;
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.75);
+
+
+
+  animation:
+
+    wh-function-float
+
+    3s
+
+    ease-in-out
+
+    infinite;
+
+}
+
+
+
+.wh-function-dot-1 {
+
+  left: 22%;
+
+  bottom: 22%;
+
+}
+
+
+
+.wh-function-dot-2 {
+
+  left: 41%;
+
+  bottom: 42%;
+
+
+
+  animation-delay: -0.7s;
+
+}
+
+
+
+.wh-function-dot-3 {
+
+  left: 61%;
+
+  bottom: 26%;
+
+
+
+  animation-delay: -1.2s;
+
+}
+
+
+
+.wh-function-dot-4 {
+
+  left: 73%;
+
+  bottom: 49%;
+
+
+
+  animation-delay: -1.8s;
+
+}
+
+
+
+.wh-function-dot-5 {
+
+  left: 34%;
+
+  bottom: 63%;
+
+
+
+  animation-delay: -2.2s;
+
+}
+
+
+
+.wh-function-dot-6 {
+
+  left: 55%;
+
+  bottom: 73%;
+
+
+
+  animation-delay: -2.7s;
+
+}
+
+
+
+.wh-active-function-electrolytes {
+
+  box-shadow:
+
+    0 0 7px
+
+      rgba(248, 238, 207, 0.7);
+
+}
+
+
+
+.wh-active-function-magnesium {
+
+  box-shadow:
+
+    0 0 7px
+
+      rgba(179, 198, 166, 0.6);
+
+}
+
+
+
+.wh-active-function-creatine {
+
+  box-shadow:
+
+    0 0 7px
+
+      rgba(224, 195, 171, 0.6);
+
+}
+
+
+
+.wh-active-function-collagen {
+
+  box-shadow:
+
+    0 0 7px
+
+      rgba(235, 187, 183, 0.6);
+
+}
+
+
+
+.wh-active-function-caffeine {
+
+  box-shadow:
+
+    0 0 7px
+
+      rgba(187, 145, 114, 0.65);
+
+}
+
+
+
+.wh-active-function-theanine {
+
+  box-shadow:
+
+    0 0 7px
+
+      rgba(201, 180, 208, 0.65);
+
+}
+
+
+
+/* =========================================================
+
+   REMOVE FUNCTION
+
+\========================================================= */
+
+
+
+.wh-remove-ripple {
+
+  position: absolute;
+
+
+
+  z-index: 35;
+
+
+
+  top: 169px;
+
+  left: 50%;
+
+
+
+  width: 80px;
+
+  height: 30px;
+
+
+
+  transform:
+
+    translateX(-50%);
+
+}
+
+
+
+.wh-remove-ripple span {
+
+  position: absolute;
+
+
+
+  left: 50%;
+
+  top: 50%;
+
+
+
+  width: 20px;
+
+  height: 8px;
+
+
+
+  transform:
+
+    translate(-50%, -50%);
+
+
+
+  border:
+
+    1px solid
+
+    rgba(255, 255, 255, 0.65);
+
+
+
+  border-radius: 50%;
+
+
+
+  animation:
+
+    wh-remove-ripple
+
+    0.75s
+
+    ease-out
+
+    forwards;
+
+}
+
+
+
+.wh-remove-ripple span:last-child {
+
+  animation-delay: 0.16s;
+
+}
+
+
+
+/* =========================================================
+
+   STATUS
+
+\========================================================= */
+
+
+
+.wh-live-selection {
+
+  position: relative;
+
+
+
+  z-index: 50;
+
+
+
+  display: grid;
+
+
+
+  grid-template-columns:
+
+    1fr
+
+    1px
+
+    1.4fr
+
+    1px
+
+    0.9fr;
+
+
+
+  align-items: center;
+
+
+
+  gap: 14px;
+
+
+
+  padding:
+
+    16px
+
+    17px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(91, 53, 39, 0.08);
+
+
+
+  border-radius: 18px;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.46);
+
+
+
+  backdrop-filter:
+
+    blur(8px);
+
+}
+
+
+
+.wh-live-selection-item {
+
+  min-width: 0;
+
+
+
+  display: flex;
+
+  flex-direction: column;
+
+
+
+  gap: 3px;
+
+}
+
+
+
+.wh-live-selection-item span {
+
+  color:
+
+    rgba(80, 44, 33, 0.56);
+
+
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.15em;
+
+}
+
+
+
+.wh-live-selection-item strong {
+
+  overflow: hidden;
+
+
+
+  color: var(--wh-cherry);
+
+
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+
+
+  white-space: nowrap;
+
+
+
+  text-overflow: ellipsis;
+
+}
+
+
+
+.wh-live-selection-divider {
+
+  width: 1px;
+
+  height: 32px;
+
+
+
+  background:
+
+    rgba(82, 49, 35, 0.1);
+
+}
+
+
+
+/* =========================================================
+
+   FUNCTION PILLS
+
+\========================================================= */
+
+
+
+.wh-live-boost-list {
+
+  position: relative;
+
+
+
+  z-index: 50;
+
+
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+
+
+  gap: 6px;
+
+
+
+  margin-top: 11px;
+
+}
+
+
+
+.wh-live-boost-pill {
+
+  padding:
+
+    7px
+
+    10px;
+
+
+
+  border-radius: 999px;
+
+
+
+  color: var(--wh-cherry);
+
+
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.05em;
+
+
+
+  text-transform: uppercase;
+
+
+
+  animation:
+
+    wh-pill-in
+
+    0.35s
+
+    ease-out;
+
+}
+
+
+
+.wh-live-boost-pill.electrolytes {
+
+  background: #efe0ce;
+
+}
+
+
+
+.wh-live-boost-pill.magnesium {
+
+  background: #acb9a2;
+
+}
+
+
+
+.wh-live-boost-pill.creatine {
+
+  background: #d6baa5;
+
+}
+
+
+
+.wh-live-boost-pill.collagen {
+
+  background: #e3b3b1;
+
+}
+
+
+
+.wh-live-boost-pill.caffeine {
+
+  background: #a77d64;
+
+}
+
+
+
+.wh-live-boost-pill.theanine {
+
+  background: #c6b2cc;
+
+}
+
+
+
+/* =========================================================
+
+   ANIMATIONS
+
+\========================================================= */
+
+
+
+@keyframes wh-water-wave {
+
+  0%,
+
+  100% {
+
+    transform:
+
+      translateX(-2%)
+
+      rotate(-1deg);
+
+  }
+
+
+
+  50% {
+
+    transform:
+
+      translateX(2%)
+
+      rotate(1deg);
+
+  }
+
+}
+
+
+
+@keyframes wh-carafe-tip {
+
+  0% {
+
+    transform:
+
+      rotate(3deg);
+
+  }
+
+
+
+  28% {
+
+    transform:
+
+      rotate(37deg);
+
+  }
+
+
+
+  76% {
+
+    transform:
+
+      rotate(37deg);
+
+  }
+
+
+
+  100% {
+
+    transform:
+
+      rotate(18deg);
+
+  }
+
+}
+
+
+
+@keyframes wh-coconut-tip {
+
+  0% {
+
+    transform:
+
+      rotate(0deg);
+
+  }
+
+
+
+  28% {
+
+    transform:
+
+      rotate(44deg);
+
+  }
+
+
+
+  77% {
+
+    transform:
+
+      rotate(44deg);
+
+  }
+
+
+
+  100% {
+
+    transform:
+
+      rotate(22deg);
+
+  }
+
+}
+
+
+
+@keyframes wh-stream {
+
+  0% {
+
+    transform:
+
+      scaleY(0);
+
+
+
+    opacity: 0;
+
+  }
+
+
+
+  14% {
+
+    transform:
+
+      scaleY(1);
+
+
+
+    opacity: 1;
+
+  }
+
+
+
+  74% {
+
+    transform:
+
+      scaleY(1);
+
+
+
+    opacity: 1;
+
+  }
+
+
+
+  100% {
+
+    transform:
+
+      scaleY(0);
+
+
+
+    opacity: 0;
+
+  }
+
+}
+
+
+
+@keyframes wh-splash-fade {
+
+  0% {
+
+    opacity: 0;
+
+  }
+
+
+
+  28% {
+
+    opacity: 1;
+
+  }
+
+
+
+  100% {
+
+    opacity: 0;
+
+  }
+
+}
+
+
+
+@keyframes wh-drop-piece {
+
+  0% {
+
+    transform:
+
+      translateY(-40px)
+
+      rotate(-20deg)
+
+      scale(0.9);
+
+
+
+    opacity: 0;
+
+  }
+
+
+
+  15% {
+
+    opacity: 1;
+
+  }
+
+
+
+  76% {
+
+    transform:
+
+      translateY(205px)
+
+      rotate(20deg)
+
+      scale(1);
+
+
+
+    opacity: 1;
+
+  }
+
+
+
+  100% {
+
+    transform:
+
+      translateY(250px)
+
+      rotate(42deg)
+
+      scale(0.68);
+
+
+
+    opacity: 0;
+
+  }
+
+}
+
+
+
+@keyframes wh-flavour-ripple {
+
+  from {
+
+    transform:
+
+      scaleX(0.4);
+
+
+
+    opacity: 0.9;
+
+  }
+
+
+
+  to {
+
+    transform:
+
+      scaleX(1.7);
+
+
+
+    opacity: 0;
+
+  }
+
+}
+
+
+
+@keyframes wh-flavour-enter {
+
+  from {
+
+    transform:
+
+      scale(0.94);
+
+
+
+    opacity: 0;
+
+  }
+
+
+
+  to {
+
+    transform:
+
+      scale(1);
+
+
+
+    opacity: 1;
+
+  }
+
+}
+
+
+
+@keyframes wh-piece-float {
+
+  0%,
+
+  100% {
+
+    transform:
+
+      translateY(0)
+
+      rotate(-5deg);
+
+  }
+
+
+
+  50% {
+
+    transform:
+
+      translateY(-13px)
+
+      rotate(8deg);
+
+  }
+
+}
+
+
+
+@keyframes wh-bubble-rise {
+
+  0% {
+
+    transform:
+
+      translateY(0)
+
+      scale(0.7);
+
+
+
+    opacity: 0;
+
+  }
+
+
+
+  15% {
+
+    opacity: 0.9;
+
+  }
+
+
+
+  100% {
+
+    transform:
+
+      translateY(-220px)
+
+      scale(1.1);
+
+
+
+    opacity: 0;
+
+  }
+
+}
+
+
+
+@keyframes wh-sachet-tip {
+
+  0% {
+
+    transform:
+
+      rotate(-4deg)
+
+      translateY(-8px);
+
+  }
+
+
+
+  28% {
+
+    transform:
+
+      rotate(18deg)
+
+      translateY(0);
+
+  }
+
+
+
+  78% {
+
+    transform:
+
+      rotate(18deg)
+
+      translateY(0);
+
+  }
+
+
+
+  100% {
+
+    transform:
+
+      rotate(5deg)
+
+      translateY(-3px);
+
+  }
+
+}
+
+
+
+@keyframes wh-powder-drop {
+
+  0% {
+
+    transform:
+
+      translateY(-12px);
+
+
+
+    opacity: 0;
+
+  }
+
+
+
+  12% {
+
+    opacity: 1;
+
+  }
+
+
+
+  75% {
+
+    opacity: 0.95;
+
+  }
+
+
+
+  100% {
+
+    transform:
+
+      translateY(185px);
+
+
+
+    opacity: 0;
+
+  }
+
+}
+
+
+
+@keyframes wh-function-float {
+
+  0%,
+
+  100% {
+
+    transform:
+
+      translateY(5px)
+
+      scale(0.8);
+
+
+
+    opacity: 0.3;
+
+  }
+
+
+
+  50% {
+
+    transform:
+
+      translateY(-14px)
+
+      scale(1);
+
+
+
+    opacity: 0.82;
+
+  }
+
+}
+
+
+
+@keyframes wh-remove-ripple {
+
+  from {
+
+    width: 20px;
+
+    height: 8px;
+
+
+
+    opacity: 0.8;
+
+  }
+
+
+
+  to {
+
+    width: 90px;
+
+    height: 28px;
+
+
+
+    opacity: 0;
+
+  }
+
+}
+
+
+
+@keyframes wh-pill-in {
+
+  from {
+
+    transform:
+
+      translateY(6px);
+
+
+
+    opacity: 0;
+
+  }
+
+
+
+  to {
+
+    transform:
+
+      translateY(0);
+
+
+
+    opacity: 1;
+
+  }
+
+}
+
+
+
+/* =========================================================
+
+   MENU BUILDER LAYOUT
+
+\========================================================= */
+
+
+
+.wh-menu-builder-live {
+
+  display: grid;
+
+
+
+  grid-template-columns:
+
+    minmax(350px, 0.85fr)
+
+    minmax(0, 1.35fr);
+
+
+
+  align-items: start;
+
+
+
+  gap:
+
+    clamp(
+
+      38px,
+
+      5vw,
+
+      85px
+
+    );
+
+}
+
+
+
+.wh-builder-animation-column,
+
+.wh-builder-options-column {
+
+  min-width: 0;
+
+}
+
+
+
+/* =========================================================
+
+   TABLET
+
+\========================================================= */
+
+
+
+@media (max-width: 980px) {
+
+  .wh-menu-builder-live {
+
+    grid-template-columns:
+
+      1fr;
+
+
+
+    gap: 32px;
+
+  }
+
+
+
+  .wh-live-drink {
+
+    position: relative;
+
+
+
+    top: auto;
+
+  }
+
+
+
+  .wh-live-scene {
+
+    height: 400px;
+
+  }
+
+}
+
+
+
+/* =========================================================
+
+   MOBILE
+
+\========================================================= */
+
+
+
+@media (max-width: 640px) {
+
+  .wh-live-drink {
+
+    padding:
+
+      20px
+
+      16px;
+
+
+
+    border-radius: 22px;
+
+  }
+
+
+
+  .wh-live-drink-header h3 {
+
+    font-size: 31px;
+
+  }
+
+
+
+  .wh-live-scene {
+
+    height: 360px;
+
+  }
+
+
+
+  .wh-water-house-cup {
+
+    width: 140px;
+
+    height: 245px;
+
+  }
+
+
+
+  .wh-cup-logo {
+
+    font-size: 19px;
+
+  }
+
+
+
+  .wh-brand-carafe {
+
+    left: -70px;
+
+
+
+    transform:
+
+      scale(0.9);
+
+  }
+
+
+
+  .wh-brand-coconut {
+
+    left: -70px;
+
+
+
+    transform:
+
+      scale(0.9);
+
+  }
+
+
+
+  .wh-function-sachet {
+
+    left:
+
+      calc(
+
+        50% - 100px
+
+      );
+
+
+
+    width: 135px;
+
+  }
+
+
+
+  .wh-live-selection {
+
+    grid-template-columns:
+
+      1fr;
+
+
+
+    gap: 9px;
+
+  }
+
+
+
+  .wh-live-selection-divider {
+
+    width: 100%;
+
+    height: 1px;
+
+  }
+
+
+
+  .wh-live-selection-item strong {
+
+    white-space: normal;
+
+  }
+
+}
+
+
+
+/* =========================================================
+
+   REDUCED MOTION
+
+\========================================================= */
+
+
+
+@media (
+
+  prefers-reduced-motion:
+
+    reduce
+
+) {
+
+  .wh-drink-surface,
+
+  .wh-sparkle-bubble,
+
+  .wh-cup-piece,
+
+  .wh-function-dot {
+
+    animation-duration:
+
+      0.01ms !important;
+
+
+
+    animation-iteration-count:
+
+      1 !important;
+
+  }
+
+}
+
+
+
+/* =========================================================
+
+   WATER HOUSE BUILDER â€” UX UPGRADE
+
+\========================================================= */
+
+
+
+.wh-builder-progress-wrap {
+
+  width: min(1180px, calc(100% - 40px));
+
+  margin: 0 auto 48px;
+
+  padding: 22px;
+
+
+
+  border: 1px solid rgba(103, 44, 36, 0.09);
+
+  border-radius: 24px;
+
+
+
+  background: rgba(246, 234, 220, 0.72);
+
+
+
+  backdrop-filter: blur(12px);
+
+}
+
+
+
+.wh-builder-progress-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+
+
+  gap: 20px;
+
+
+
+  margin-bottom: 14px;
+
+}
+
+
+
+.wh-builder-progress-top > div {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+}
+
+
+
+.wh-builder-progress-kicker {
+
+  color: rgba(105, 34, 28, 0.58);
+
+
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+}
+
+
+
+.wh-builder-progress-top strong {
+
+  color: #681c17;
+
+
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+}
+
+
+
+.wh-builder-reset {
+
+  display: inline-flex;
+
+  align-items: center;
+
+
+
+  gap: 7px;
+
+
+
+  padding: 9px 13px;
+
+
+
+  border: 1px solid rgba(104, 36, 29, 0.12);
+
+  border-radius: 999px;
+
+
+
+  background: rgba(255, 255, 255, 0.45);
+
+
+
+  color: #681c17;
+
+
+
+  font: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+
+
+  cursor: pointer;
+
+}
+
+
+
+.wh-builder-progress-bar {
+
+  height: 3px;
+
+
+
+  overflow: hidden;
+
+
+
+  margin-bottom: 17px;
+
+
+
+  border-radius: 999px;
+
+
+
+  background: rgba(104, 36, 29, 0.08);
+
+}
+
+
+
+.wh-builder-progress-bar span {
+
+  display: block;
+
+
+
+  height: 100%;
+
+
+
+  border-radius: inherit;
+
+
+
+  background: #681c17;
+
+
+
+  transition:
+
+    width 0.65s
+
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+}
+
+
+
+/* STEP NAV */
+
+
+
+.wh-builder-step-tabs {
+
+  display: grid;
+
+
+
+  grid-template-columns:
+
+    repeat(3, minmax(0, 1fr));
+
+
+
+  gap: 8px;
+
+}
+
+
+
+.wh-builder-step-tabs button {
+
+  position: relative;
+
+
+
+  display: grid;
+
+
+
+  grid-template-columns:
+
+    auto
+
+    minmax(0, 1fr)
+
+    auto;
+
+
+
+  align-items: center;
+
+
+
+  gap: 10px;
+
+
+
+  padding: 12px 14px;
+
+
+
+  border: 1px solid transparent;
+
+  border-radius: 14px;
+
+
+
+  background: transparent;
+
+
+
+  color: #6d4a3d;
+
+
+
+  text-align: left;
+
+
+
+  cursor: pointer;
+
+
+
+  transition:
+
+background 0.25s ease,
+
+    border-color 0.25s ease,
+
+    transform 0.25s ease;
+
+}
+
+
+
+.wh-builder-step-tabs button:hover {
+
+  transform: translateY(-1px);
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.4);
+
+}
+
+
+
+.wh-builder-step-tabs button.active {
+
+  border-color:
+
+    rgba(103, 32, 26, 0.12);
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.64);
+
+}
+
+
+
+.wh-builder-step-tabs button > span {
+
+  display: grid;
+
+  place-items: center;
+
+
+
+  width: 30px;
+
+  height: 30px;
+
+
+
+  border-radius: 50%;
+
+
+
+  background:
+
+    rgba(104, 33, 27, 0.08);
+
+
+
+  color: #681c17;
+
+
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+}
+
+
+
+.wh-builder-step-tabs button.active > span {
+
+  background: #681c17;
+
+
+
+  color: #f6e6d8;
+
+}
+
+
+
+.wh-builder-step-tabs button div {
+
+  min-width: 0;
+
+
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+}
+
+
+
+.wh-builder-step-tabs small {
+
+  color:
+
+    rgba(80, 45, 34, 0.5);
+
+
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.14em;
+
+}
+
+
+
+.wh-builder-step-tabs strong {
+
+  overflow: hidden;
+
+
+
+  color: #5d291f;
+
+
+
+  font-size: 10px;
+
+
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+}
+
+
+
+/* BUILDER STEP */
+
+
+
+.wh-builder-step-upgraded {
+
+  position: relative;
+
+
+
+  padding: 24px;
+
+
+
+  border: 1px solid transparent;
+
+  border-radius: 24px;
+
+
+
+  transition:
+
+background 0.35s ease,
+
+    border-color 0.35s ease,
+
+    box-shadow 0.35s ease;
+
+}
+
+
+
+.wh-builder-step-upgraded.active-step {
+
+  border-color:
+
+    rgba(102, 34, 28, 0.09);
+
+
+
+  background:
+
+    rgba(248, 239, 229, 0.38);
+
+
+
+  box-shadow:
+
+    0 20px 50px
+
+    rgba(68, 39, 29, 0.035);
+
+}
+
+
+
+.wh-step-current-selection {
+
+  margin-left: auto;
+
+
+
+  display: flex;
+
+  flex-direction: column;
+
+
+
+  align-items: flex-end;
+
+
+
+  gap: 3px;
+
+}
+
+
+
+.wh-step-current-selection small {
+
+  color:
+
+    rgba(89, 50, 38, 0.42);
+
+
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.14em;
+
+}
+
+
+
+.wh-step-current-selection strong {
+
+  max-width: 150px;
+
+
+
+  overflow: hidden;
+
+
+
+  color: #681c17;
+
+
+
+  font-size: 10px;
+
+
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+}
+
+
+
+/* NEXT BUTTON */
+
+
+
+.wh-step-next-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+
+
+  gap: 8px;
+
+
+
+  margin-top: 18px;
+
+
+
+  padding:
+
+    10px
+
+    14px;
+
+
+
+  border: 0;
+
+  border-radius: 999px;
+
+
+
+  background:
+
+    rgba(104, 31, 25, 0.075);
+
+
+
+  color: #681c17;
+
+
+
+  font: inherit;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.03em;
+
+
+
+  cursor: pointer;
+
+
+
+  transition:
+
+    transform 0.2s ease,
+
+background 0.2s ease;
+
+}
+
+
+
+.wh-step-next-button:hover {
+
+  transform: translateY(2px);
+
+
+
+  background:
+
+    rgba(104, 31, 25, 0.12);
+
+}
+
+
+
+/* FUNCTIONS */
+
+
+
+.wh-function-helper {
+
+  max-width: 530px;
+
+
+
+  margin:
+
+    -4px
+
+    0
+
+    20px;
+
+
+
+  color:
+
+    rgba(71, 47, 37, 0.6);
+
+
+
+  font-size: 12px;
+
+  line-height: 1.55;
+
+}
+
+
+
+.wh-selected-functions {
+
+  margin-top: 20px;
+
+  padding-top: 18px;
+
+
+
+  border-top:
+
+    1px solid
+
+    rgba(91, 52, 40, 0.08);
+
+}
+
+
+
+.wh-selected-functions > small {
+
+  display: block;
+
+
+
+  margin-bottom: 10px;
+
+
+
+  color:
+
+    rgba(86, 47, 35, 0.48);
+
+
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.16em;
+
+}
+
+
+
+.wh-selected-functions > div {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+
+
+  gap: 7px;
+
+}
+
+
+
+.wh-selected-functions button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+
+
+  gap: 7px;
+
+
+
+  padding:
+
+    7px
+
+    10px;
+
+
+
+  border: 0;
+
+  border-radius: 999px;
+
+
+
+  background: #681c17;
+
+
+
+  color: #f7e7d8;
+
+
+
+  font: inherit;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+
+
+  cursor: pointer;
+
+}
+
+
+
+.wh-selected-functions button span {
+
+  opacity: 0.7;
+
+
+
+  font-size: 13px;
+
+}
+
+
+
+/* SUMMARY */
+
+
+
+.wh-menu-summary-upgraded
+
+.wh-menu-order-card {
+
+  overflow: hidden;
+
+}
+
+
+
+.wh-order-card-title {
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+
+
+  gap: 20px;
+
+
+
+  margin-bottom: 10px;
+
+  padding-bottom: 16px;
+
+
+
+  border-bottom:
+
+    1px solid
+
+    rgba(255, 255, 255, 0.12);
+
+}
+
+
+
+.wh-order-card-title span {
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+
+
+  letter-spacing: 0.16em;
+
+
+
+  opacity: 0.6;
+
+}
+
+
+
+.wh-order-card-title strong {
+
+  font-size: 22px;
+
+  font-weight: 500;
+
+}
+
+
+
+.wh-order-actions {
+
+  display: grid;
+
+
+
+  grid-template-columns:
+
+    auto
+
+    minmax(0, 1fr);
+
+
+
+  gap: 10px;
+
+
+
+  margin-top: 16px;
+
+}
+
+
+
+.wh-order-reset {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+
+
+  gap: 6px;
+
+
+
+  padding:
+
+    11px
+
+    13px;
+
+
+
+  border:
+
+    1px solid
+
+    rgba(255, 255, 255, 0.15);
+
+
+
+  border-radius: 999px;
+
+
+
+  background: transparent;
+
+
+
+  color: inherit;
+
+
+
+  font: inherit;
+
+  font-size: 9px;
+
+
+
+  cursor: pointer;
+
+}
+
+
+
+/* =========================================================
+
+   MOBILE
+
+\========================================================= */
+
+
+
+@media (max-width: 760px) {
+
+  .wh-builder-progress-wrap {
+
+    width:
+
+      calc(100% - 24px);
+
+
+
+    padding: 16px;
+
+  }
+
+
+
+  .wh-builder-step-tabs {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .wh-builder-step-tabs button {
+
+    padding:
+
+      10px
+
+      11px;
+
+  }
+
+
+
+  .wh-builder-step-upgraded {
+
+    padding:
+
+      18px
+
+      12px;
+
+  }
+
+
+
+  .wh-step-current-selection {
+
+    display: none;
+
+  }
+
+
+
+  .wh-order-actions {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .wh-order-reset {
+
+    order: 2;
+
+  }
+
+}
+
+
+
+/* =========================================================
+
+   WATER HOUSE â€” LARGER TYPOGRAPHY OVERRIDE
+
+   Put this at the very bottom of the CSS file.
+
+\========================================================= */
+
+
+
+/* LIVE DRINK HEADER */
+
+
+
+.wh-live-kicker {
+
+  font-size: 12px;
+
+  letter-spacing: 0.16em;
+
+}
+
+
+
+.wh-live-drink-header h3 {
+
+  font-size: clamp(38px, 4vw, 58px);
+
+  line-height: 0.98;
+
+}
+
+
+
+.wh-live-drink-header p {
+
+  font-size: 16px;
+
+  line-height: 1.55;
+
+}
+
+
+
+/* CUP LOGO */
+
+
+
+.wh-cup-logo {
+
+  font-size: 27px;
+
+}
+
+
+
+/* FUNCTION SACHET */
+
+
+
+.wh-function-logo {
+
+  font-size: 15px;
+
+}
+
+
+
+.wh-function-name {
+
+  font-size: 9px;
+
+  letter-spacing: 0.08em;
+
+}
+
+
+
+/* LIVE SELECTION BELOW CUP */
+
+
+
+.wh-live-selection-item span {
+
+  font-size: 10px;
+
+  letter-spacing: 0.12em;
+
+}
+
+
+
+.wh-live-selection-item strong {
+
+  font-size: 13px;
+
+  line-height: 1.3;
+
+}
+
+
+
+.wh-live-boost-pill {
+
+  font-size: 10px;
+
+  padding: 8px 12px;
+
+}
+
+
+
+/* PROGRESS */
+
+
+
+.wh-builder-progress-kicker {
+
+  font-size: 11px;
+
+}
+
+
+
+.wh-builder-progress-top strong {
+
+  font-size: 20px;
+
+}
+
+
+
+.wh-builder-reset {
+
+  font-size: 12px;
+
+  padding: 10px 15px;
+
+}
+
+
+
+/* STEP TABS */
+
+
+
+.wh-builder-step-tabs button > span {
+
+  width: 36px;
+
+  height: 36px;
+
+  font-size: 11px;
+
+}
+
+
+
+.wh-builder-step-tabs small {
+
+  font-size: 10px;
+
+}
+
+
+
+.wh-builder-step-tabs strong {
+
+  font-size: 14px;
+
+  line-height: 1.3;
+
+}
+
+
+
+/* STEP HEADINGS */
+
+
+
+.wh-builder-step-head small {
+
+  font-size: 12px;
+
+  letter-spacing: 0.12em;
+
+}
+
+
+
+.wh-builder-step-head h3 {
+
+  font-size: clamp(28px, 2.4vw, 36px);
+
+  line-height: 1.05;
+
+}
+
+
+
+.wh-builder-step-number {
+
+  font-size: 15px;
+
+}
+
+
+
+.wh-step-current-selection small {
+
+  font-size: 10px;
+
+}
+
+
+
+.wh-step-current-selection strong {
+
+  font-size: 14px;
+
+  max-width: 220px;
+
+}
+
+
+
+/* WATER CARDS */
+
+
+
+.wh-base-copy strong {
+
+  font-size: 18px;
+
+}
+
+
+
+.wh-base-copy p {
+
+  font-size: 14px;
+
+  line-height: 1.45;
+
+}
+
+
+
+.wh-base-card .wh-card-icon {
+
+  width: 44px;
+
+  height: 44px;
+
+}
+
+
+
+/* FLAVOUR CARDS */
+
+
+
+.wh-flavour-number {
+
+  font-size: 12px;
+
+}
+
+
+
+.wh-flavour-copy small {
+
+  font-size: 10px;
+
+}
+
+
+
+.wh-flavour-copy h3 {
+
+  font-size: 20px;
+
+  line-height: 1.15;
+
+}
+
+
+
+.wh-flavour-copy p {
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+}
+
+
+
+.wh-menu-price {
+
+  font-size: 14px;
+
+}
+
+
+
+/* FUNCTION CARDS */
+
+
+
+.wh-boost-card small {
+
+  font-size: 10px;
+
+}
+
+
+
+.wh-boost-card h3 {
+
+  font-size: 19px;
+
+  line-height: 1.15;
+
+}
+
+
+
+.wh-boost-card p {
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+}
+
+
+
+.wh-function-helper {
+
+  font-size: 15px;
+
+  line-height: 1.6;
+
+}
+
+
+
+/* SELECTED FUNCTIONS */
+
+
+
+.wh-selected-functions > small {
+
+  font-size: 10px;
+
+}
+
+
+
+.wh-selected-functions button {
+
+  font-size: 11px;
+
+  padding: 9px 13px;
+
+}
+
+
+
+.wh-selected-functions button span {
+
+  font-size: 16px;
+
+}
+
+
+
+/* NEXT BUTTON */
+
+
+
+.wh-step-next-button {
+
+  font-size: 12px;
+
+  padding: 12px 17px;
+
+}
+
+
+
+/* SUMMARY */
+
+
+
+.wh-order-card-title span {
+
+  font-size: 10px;
+
+}
+
+
+
+.wh-order-card-title strong {
+
+  font-size: 28px;
+
+}
+
+
+
+.wh-order-row small {
+
+  font-size: 11px;
+
+}
+
+
+
+.wh-order-row strong {
+
+  font-size: 16px;
+
+  line-height: 1.35;
+
+}
+
+
+
+.wh-order-reset {
+
+  font-size: 12px;
+
+  padding: 12px 15px;
+
+}
+
+
+
+.wh-menu-summary-button {
+
+  font-size: 13px;
+
+}
+
+
+
+/* =========================================================
+
+   MOBILE
+
+\========================================================= */
+
+
+
+@media (max-width: 760px) {
+
+  .wh-live-kicker {
+
+    font-size: 10px;
+
+  }
+
+
+
+  .wh-live-drink-header h3 {
+
+    font-size: 38px;
+
+  }
+
+
+
+  .wh-live-drink-header p {
+
+    font-size: 14px;
+
+  }
+
+
+
+  .wh-builder-progress-top strong {
+
+    font-size: 18px;
+
+  }
+
+
+
+  .wh-builder-step-tabs small {
+
+    font-size: 9px;
+
+  }
+
+
+
+  .wh-builder-step-tabs strong {
+
+    font-size: 13px;
+
+  }
+
+
+
+  .wh-builder-step-head h3 {
+
+    font-size: 27px;
+
+  }
+
+
+
+  .wh-base-copy strong {
+
+    font-size: 17px;
+
+  }
+
+
+
+  .wh-base-copy p,
+
+  .wh-flavour-copy p,
+
+  .wh-boost-card p,
+
+  .wh-function-helper {
+
+    font-size: 14px;
+
+  }
+
+
+
+  .wh-flavour-copy h3,
+
+  .wh-boost-card h3 {
+
+    font-size: 18px;
+
+  }
+
+
+
+  .wh-live-selection-item span {
+
+    font-size: 9px;
+
+  }
+
+
+
+  .wh-live-selection-item strong {
+
+    font-size: 13px;
+
+  }
+
+}
+
+
+
+
+
+/* =========================================================
+
+   NO DEFAULT SELECTION / LOCKED STEPS
+
+\========================================================= */
+
+
+
+.wh-step-next-button:disabled,
+
+.wh-builder-reset:disabled,
+
+.wh-order-reset:disabled {
+
+  opacity: 0.38;
+
+  cursor: not-allowed;
+
+  transform: none !important;
+
+}
+
+
+
+.wh-options-disabled {
+
+  opacity: 0.45;
+
+}
+
+
+
+.wh-options-disabled button {
+
+  cursor: not-allowed;
+
+}
+
+
+
+.wh-step-lock-message {
+
+  display: flex;
+
+  align-items: center;
+
+
+
+  gap: 10px;
+
+
+
+  margin-bottom: 18px;
+
+  padding: 14px 16px;
+
+
+
+  border: 1px solid
+
+    rgba(104, 35, 28, 0.09);
+
+
+
+  border-radius: 14px;
+
+
+
+  background:
+
+    rgba(255, 255, 255, 0.38);
+
+
+
+  color: rgba(84, 49, 38, 0.68);
+
+
+
+  font-size: 14px;
+
+  line-height: 1.45;
+
+}
+
+
+
+.wh-function-optional-note {
+
+  margin-top: 18px;
+
+
+
+  padding:
+
+    13px
+
+    15px;
+
+
+
+  border-radius: 14px;
+
+
+
+  background:
+
+    rgba(54, 77, 62, 0.08);
+
+
+
+  color: #425b49;
+
+
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+}
+
+
+
+.wh-summary-disabled {
+
+  opacity: 0.42;
+
+
+
+  cursor: not-allowed;
+
+
+
+  border: 0;
+
+}
+
+
+
+.wh-order-row:not(.is-complete) strong {
+
+  opacity: 0.58;
+
+}
+
+
+
+.wh-order-row.is-complete strong {
+
+  opacity: 1;
+
+}
+
+
+
+@media (max-width: 760px) {
+
+  .wh-step-lock-message {
+
+    font-size: 13px;
+
+  }
+
+
+
+  .wh-function-optional-note {
+
+    font-size: 13px;
+
+  }
+
+}
