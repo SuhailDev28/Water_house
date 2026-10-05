@@ -6205,3 +6205,26 @@ background 0.2s ease;
   }
 
 }
+
+.wh-cup-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 6;
+  width: 92px;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.wh-cup-logo-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: saturate(0.9);
+}
+
+.wh-live-scene-empty .wh-cup-shadow {
+  opacity: 0.72;
+}

@@ -3,96 +3,66 @@ import { useEffect, useMemo, useRef, useState } from "react";
 const FLAVOURS = {
   "White Peach": {
     key: "white-peach",
-
     label: "WHITE PEACH",
-
     tone: "peach",
-
     ingredients: [
       { type: "peach", className: "piece-one" },
-
       { type: "peach", className: "piece-two" },
-
       { type: "peach", className: "piece-three" },
     ],
   },
 
   "Strawberry Salt": {
     key: "strawberry-salt",
-
     label: "STRAWBERRY SALT",
-
     tone: "strawberry",
-
     ingredients: [
       { type: "strawberry", className: "piece-one" },
-
       { type: "strawberry", className: "piece-two" },
-
       { type: "strawberry", className: "piece-three" },
     ],
   },
 
   "Yuzu Mint": {
     key: "yuzu-mint",
-
     label: "YUZU MINT",
-
     tone: "yuzu",
-
     ingredients: [
       { type: "citrus", className: "piece-one" },
-
       { type: "mint", className: "piece-two" },
-
       { type: "mint", className: "piece-three" },
     ],
   },
 
   "Cucumber Lime": {
     key: "cucumber-lime",
-
     label: "CUCUMBER LIME",
-
     tone: "cucumber",
-
     ingredients: [
       { type: "cucumber", className: "piece-one" },
-
       { type: "lime", className: "piece-two" },
-
       { type: "cucumber", className: "piece-three" },
     ],
   },
 
   "Green Grape": {
     key: "green-grape",
-
     label: "GREEN GRAPE",
-
     tone: "grape",
-
     ingredients: [
       { type: "grape", className: "piece-one" },
-
       { type: "grape", className: "piece-two" },
-
       { type: "grape", className: "piece-three" },
     ],
   },
 
   "Coconut Pandan": {
     key: "coconut-pandan",
-
     label: "COCONUT PANDAN",
-
     tone: "pandan",
-
     ingredients: [
       { type: "coconut-piece", className: "piece-one" },
-
       { type: "pandan", className: "piece-two" },
-
       { type: "coconut-piece", className: "piece-three" },
     ],
   },
@@ -101,64 +71,47 @@ const FLAVOURS = {
 const BOOSTS = {
   Electrolytes: {
     label: "ELECTROLYTES",
-
     className: "electrolytes",
   },
 
   Magnesium: {
     label: "MAGNESIUM",
-
     className: "magnesium",
   },
 
   Creatine: {
     label: "CREATINE",
-
     className: "creatine",
   },
 
   Collagen: {
     label: "COLLAGEN",
-
     className: "collagen",
   },
 
   Caffeine: {
     label: "CAFFEINE",
-
     className: "caffeine",
   },
 
   "L-Theanine": {
     label: "L-THEANINE",
-
     className: "theanine",
   },
 };
 
 const BUBBLES = [
   { left: "12%", size: "xs", delay: "0s", duration: "2.2s" },
-
   { left: "20%", size: "sm", delay: "0.2s", duration: "2.6s" },
-
   { left: "29%", size: "md", delay: "0.5s", duration: "2.4s" },
-
   { left: "38%", size: "sm", delay: "0.8s", duration: "2.9s" },
-
   { left: "47%", size: "xs", delay: "1s", duration: "2.3s" },
-
   { left: "56%", size: "sm", delay: "0.1s", duration: "2.7s" },
-
   { left: "65%", size: "md", delay: "0.7s", duration: "2.5s" },
-
   { left: "74%", size: "xs", delay: "1.2s", duration: "2.8s" },
-
   { left: "83%", size: "sm", delay: "0.4s", duration: "2.4s" },
-
   { left: "31%", size: "xs", delay: "1.5s", duration: "2.6s" },
-
   { left: "52%", size: "md", delay: "1.7s", duration: "2.9s" },
-
   { left: "70%", size: "sm", delay: "1.4s", duration: "2.3s" },
 ];
 
@@ -175,7 +128,6 @@ function IngredientShape({ type }) {
     return (
       <span className="wh-svg-ingredient wh-svg-strawberry">
         <span className="wh-strawberry-leaf" />
-
         <span className="wh-strawberry-seeds" />
       </span>
     );
@@ -217,11 +169,8 @@ function IngredientShape({ type }) {
     return (
       <span className="wh-svg-ingredient wh-svg-grape">
         <span />
-
         <span />
-
         <span />
-
         <span />
       </span>
     );
@@ -266,7 +215,6 @@ function BasePourAnimation({ base }) {
           <>
             <div className="wh-brand-carafe">
               <div className="wh-carafe-neck" />
-
               <div className="wh-carafe-body">
                 <div className="wh-carafe-shine" />
               </div>
@@ -279,9 +227,7 @@ function BasePourAnimation({ base }) {
 
       <div className="wh-pour-splash">
         <span />
-
         <span />
-
         <span />
       </div>
     </div>
@@ -289,6 +235,8 @@ function BasePourAnimation({ base }) {
 }
 
 function FlavourAddAnimation({ flavourData }) {
+  if (!flavourData) return null;
+
   return (
     <div className="wh-animation-event-layer">
       <div className="wh-live-flavour-rain">
@@ -304,7 +252,6 @@ function FlavourAddAnimation({ flavourData }) {
 
       <div className="wh-flavour-splash">
         <span />
-
         <span />
       </div>
     </div>
@@ -324,7 +271,6 @@ function FunctionAddAnimation({ boostName }) {
         )}
       >
         <span className="wh-function-logo">waterhouse</span>
-
         <span className="wh-function-name">{data.label}</span>
       </div>
 
@@ -348,7 +294,6 @@ function FunctionRemoveAnimation() {
     <div className="wh-animation-event-layer wh-remove-event">
       <div className="wh-remove-ripple">
         <span />
-
         <span />
       </div>
     </div>
@@ -356,60 +301,56 @@ function FunctionRemoveAnimation() {
 }
 
 export default function DrinkBuilderAnimation({
-  base = "Still",
-
-  flavour = "White Peach",
-
+  base = "",
+  flavour = "",
   boosts = [],
 }) {
   const [eventType, setEventType] = useState("idle");
-
   const [eventKey, setEventKey] = useState(0);
-
   const [latestBoost, setLatestBoost] = useState("");
-
   const [removedBoost, setRemovedBoost] = useState("");
 
   const previousBase = useRef(base);
-
   const previousFlavour = useRef(flavour);
-
   const previousBoosts = useRef([...boosts]);
 
   const flavourData = useMemo(() => {
-    return FLAVOURS[flavour] || FLAVOURS["White Peach"];
+    return flavour ? FLAVOURS[flavour] || null : null;
   }, [flavour]);
 
+  const hasBase = Boolean(base);
+  const hasFlavour = Boolean(flavourData);
+
   const baseKey = useMemo(() => {
-    return String(base || "Still")
-      .trim()
-
-      .toLowerCase()
-
-      .replace(/\s+/g, "-");
+    if (!base) return "";
+    return String(base).trim().toLowerCase().replace(/\s+/g, "-");
   }, [base]);
 
   useEffect(() => {
-    if (previousBase.current === base) {
-      return;
-    }
+    if (previousBase.current === base) return;
 
     previousBase.current = base;
 
-    setEventType("base");
+    if (!base) {
+      setEventType("idle");
+      return;
+    }
 
+    setEventType("base");
     setEventKey((value) => value + 1);
   }, [base]);
 
   useEffect(() => {
-    if (previousFlavour.current === flavour) {
-      return;
-    }
+    if (previousFlavour.current === flavour) return;
 
     previousFlavour.current = flavour;
 
-    setEventType("flavour");
+    if (!flavour) {
+      setEventType("idle");
+      return;
+    }
 
+    setEventType("flavour");
     setEventKey((value) => value + 1);
   }, [flavour]);
 
@@ -417,40 +358,30 @@ export default function DrinkBuilderAnimation({
 
   useEffect(() => {
     const before = previousBoosts.current || [];
-
     const added = boosts.find((item) => !before.includes(item));
-
     const removed = before.find((item) => !boosts.includes(item));
 
     previousBoosts.current = [...boosts];
 
     if (added) {
       setLatestBoost(added);
-
       setRemovedBoost("");
-
       setEventType("boost-add");
-
       setEventKey((value) => value + 1);
-
       return;
     }
 
     if (removed) {
       setRemovedBoost(removed);
-
       setLatestBoost("");
-
       setEventType("boost-remove");
-
       setEventKey((value) => value + 1);
+      return;
     }
   }, [boostsKey]);
 
   return (
     <div className="wh-live-drink">
-      {/* HEADER */}
-
       <div className="wh-live-drink-header">
         <span className="wh-live-kicker">MODERN HYDRATION RITUAL</span>
 
@@ -463,30 +394,26 @@ export default function DrinkBuilderAnimation({
         <p>Build it one layer at a time.</p>
       </div>
 
-      {/* SCENE */}
-
       <div
         className={[
           "wh-live-scene",
-
-          `wh-live-base-${baseKey}`,
-
-          `wh-live-tone-${flavourData.tone}`,
-        ].join(" ")}
+          hasBase ? `wh-live-base-${baseKey}` : "",
+          hasFlavour ? `wh-live-tone-${flavourData.tone}` : "",
+          !hasBase ? "wh-live-scene-empty" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
       >
         <div className="wh-live-light" />
-
         <div className="wh-live-floor" />
 
-        {/* ONLY TEMPORARY ACTIONS REMOUNT */}
-
-        {eventType === "base" && (
+        {eventType === "base" && hasBase && (
           <div key={`base-${eventKey}`}>
             <BasePourAnimation base={base} />
           </div>
         )}
 
-        {eventType === "flavour" && (
+        {eventType === "flavour" && flavourData && (
           <div key={`flavour-${eventKey}`}>
             <FlavourAddAnimation flavourData={flavourData} />
           </div>
@@ -504,93 +431,80 @@ export default function DrinkBuilderAnimation({
           </div>
         )}
 
-        {/* PERSISTENT CUP */}
-
         <div className="wh-cup-wrapper">
           <div className="wh-water-house-cup">
             <div className="wh-cup-rim" />
 
-            {/* PERSISTENT LIQUID */}
-
-            <div
-              className={[
-                "wh-drink-liquid",
-
-                `wh-drink-base-${baseKey}`,
-
-                `wh-drink-tone-${flavourData.tone}`,
-              ].join(" ")}
-            >
-              <div className="wh-drink-surface" />
-
-              {/* SPARKLING REMAINS ACTIVE */}
-
-              {base === "Sparkling" && (
-                <div className="wh-sparkling-field">
-                  {BUBBLES.map(({ left, size, delay, duration }, index) => (
-                    <span
-                      key={index}
-                      className={`wh-sparkle-bubble wh-bubble-${size}`}
-                      style={{
-                        left,
-
-                        animationDelay: delay,
-
-                        animationDuration: duration,
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* CURRENT FLAVOUR STAYS INSIDE */}
-
+            {hasBase && (
               <div
-                key={`inside-${flavourData.key}`}
-                className="wh-cup-ingredients"
+                className={[
+                  "wh-drink-liquid",
+                  `wh-drink-base-${baseKey}`,
+                  hasFlavour ? `wh-drink-tone-${flavourData.tone}` : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               >
-                {flavourData.ingredients.map((ingredient, index) => (
-                  <div
-                    key={`${ingredient.type}-${index}`}
-                    className={`wh-cup-piece wh-cup-piece-${index + 1}`}
-                  >
-                    <IngredientShape type={ingredient.type} />
+                <div className="wh-drink-surface" />
+
+                {base === "Sparkling" && (
+                  <div className="wh-sparkling-field">
+                    {BUBBLES.map(({ left, size, delay, duration }, index) => (
+                      <span
+                        key={index}
+                        className={`wh-sparkle-bubble wh-bubble-${size}`}
+                        style={{
+                          left,
+                          animationDelay: delay,
+                          animationDuration: duration,
+                        }}
+                      />
+                    ))}
                   </div>
-                ))}
+                )}
+
+                {hasFlavour && (
+                  <div
+                    key={`inside-${flavourData.key}`}
+                    className="wh-cup-ingredients"
+                  >
+                    {flavourData.ingredients.map((ingredient, index) => (
+                      <div
+                        key={`${ingredient.type}-${index}`}
+                        className={`wh-cup-piece wh-cup-piece-${index + 1}`}
+                      >
+                        <IngredientShape type={ingredient.type} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {boosts.length > 0 && (
+                  <div className="wh-function-dissolve">
+                    {boosts.slice(0, 6).map((boost, index) => (
+                      <span
+                        key={boost}
+                        className={[
+                          "wh-function-dot",
+                          `wh-function-dot-${index + 1}`,
+                          `wh-active-function-${BOOSTS[boost]?.className || ""}`,
+                        ].join(" ")}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-
-              {/* CURRENT FUNCTIONS REMAIN */}
-
-              {boosts.length > 0 && (
-                <div className="wh-function-dissolve">
-                  {boosts.slice(0, 6).map((boost, index) => (
-                    <span
-                      key={boost}
-                      className={[
-                        "wh-function-dot",
-
-                        `wh-function-dot-${index + 1}`,
-
-                        `wh-active-function-${BOOSTS[boost]?.className || ""}`,
-                      ].join(" ")}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* REFLECTIONS */}
+            )}
 
             <div className="wh-cup-reflection wh-cup-reflection-one" />
-
             <div className="wh-cup-reflection wh-cup-reflection-two" />
 
-            {/* BRAND */}
-
             <div className="wh-cup-logo">
-              <span>water</span>
-
-              <span>house</span>
+              <img
+                src="/water-house-logo.svg"
+                alt="Water House"
+                className="wh-cup-logo-image"
+              />
             </div>
           </div>
 
@@ -598,35 +512,28 @@ export default function DrinkBuilderAnimation({
         </div>
       </div>
 
-      {/* BUILD STATUS */}
-
       <div className="wh-live-selection">
         <div className="wh-live-selection-item">
           <span>BASE</span>
-
-          <strong>{base}</strong>
+          <strong>{base || "Choose"}</strong>
         </div>
 
         <div className="wh-live-selection-divider" />
 
         <div className="wh-live-selection-item">
           <span>FLAVOUR</span>
-
-          <strong>{flavourData.label}</strong>
+          <strong>{flavourData?.label || "Choose"}</strong>
         </div>
 
         <div className="wh-live-selection-divider" />
 
         <div className="wh-live-selection-item">
           <span>FUNCTION</span>
-
           <strong>
             {boosts.length ? `${boosts.length} ADDED` : "OPTIONAL"}
           </strong>
         </div>
       </div>
-
-      {/* SELECTED FUNCTIONS */}
 
       {boosts.length > 0 && (
         <div className="wh-live-boost-list">
@@ -635,7 +542,6 @@ export default function DrinkBuilderAnimation({
               key={boost}
               className={[
                 "wh-live-boost-pill",
-
                 BOOSTS[boost]?.className || "",
               ].join(" ")}
             >
