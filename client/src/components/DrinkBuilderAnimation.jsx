@@ -369,9 +369,7 @@ export default function DrinkBuilderAnimation({
   const previousFlavourRef = useRef(flavour);
   const previousBoostsRef = useRef([...boosts]);
 
-  const actionTimerRef = useRef(null);
-  const finishTimerRef = useRef(null);
-  const serveTimerRef = useRef(null);
+  const preparationTimersRef = useRef([]);
 
   const flavourData = useMemo(() => {
     return flavour ? FLAVOURS[flavour] || null : null;
@@ -386,29 +384,22 @@ export default function DrinkBuilderAnimation({
     return String(base).trim().toLowerCase().replace(/\s+/g, "-");
   }, [base]);
 
-  const clearTimers = () => {
-    if (actionTimerRef.current) {
-      clearTimeout(actionTimerRef.current);
-      actionTimerRef.current = null;
-    }
+  const clearPreparationTimers = () => {
+    preparationTimersRef.current.forEach((timer) => {
+      clearTimeout(timer);
+    });
 
-    if (finishTimerRef.current) {
-      clearTimeout(finishTimerRef.current);
-      finishTimerRef.current = null;
-    }
-
-    if (serveTimerRef.current) {
-      clearTimeout(serveTimerRef.current);
-      serveTimerRef.current = null;
-    }
+    preparationTimersRef.current = [];
   };
 
-  const runAction = (nextAction, label) => {
-    if (!nextAction) return;
+  const schedulePreparation = (callback, delay) => {
+    const timer = setTimeout(callback, delay);
+    preparationTimersRef.current.push(timer);
+    return timer;
+  };
 
-    if (actionTimerRef.current) {
-      clearTimeout(actionTimerRef.current);
-    }
+  const showAction = (nextAction, label) => {
+    if (!nextAction) return;
 
     setIsFinished(nextAction.type === "serve");
     setStoryLabel(label);
@@ -419,54 +410,135 @@ export default function DrinkBuilderAnimation({
     });
 
     setActionKey((value) => value + 1);
-
-    const actionDuration = ACTION_DURATION[nextAction.type] || 1200;
-
-    actionTimerRef.current = setTimeout(() => {
-      setAction(null);
-    }, actionDuration + 80);
   };
 
-  const scheduleFinish = (afterType = "flavour") => {
-    if (finishTimerRef.current) {
-      clearTimeout(finishTimerRef.current);
+  const queuePreparation = (
+    steps,
+    { includeFinish = true, clearExisting = true } = {},
+  ) => {
+    if (clearExisting) {
+      clearPreparationTimers();
     }
 
-    if (serveTimerRef.current) {
-      clearTimeout(serveTimerRef.current);
+    setIsFinished(false);
+
+    const queue = [...steps];
+
+    if (includeFinish && hasBase && hasFlavour) {
+      queue.push(
+        {
+          action: { type: "stir" },
+          label: "Mixing your Water House ritual.",
+          duration: ACTION_DURATION.stir,
+          gap: 180,
+        },
+        {
+          action: { type: "serve" },
+          label: "Your Water House ritual is ready.",
+          duration: ACTION_DURATION.serve,
+          gap: 0,
+        },
+      );
     }
 
-    if (!hasBase || !hasFlavour) {
-      return;
+    let elapsed = 0;
+
+    queue.forEach((step, index) => {
+      const duration =
+        step.duration || ACTION_DURATION[step.action?.type] || 1200;
+
+      const gap = step.gap ?? 220;
+
+      schedulePreparation(() => {
+        showAction(step.action, step.label);
+      }, elapsed);
+
+      schedulePreparation(
+        () => {
+          setAction((currentAction) => {
+            if (currentAction?.type === step.action?.type) {
+              return null;
+            }
+
+            return currentAction;
+          });
+        },
+        elapsed + duration + 40,
+      );
+
+      elapsed += duration + gap;
+
+      if (index === queue.length - 1 && step.action?.type === "serve") {
+        schedulePreparation(() => {
+          setAction(null);
+          setIsFinished(true);
+          setStoryLabel("Your Water House ritual is ready.");
+        }, elapsed + 40);
+      }
+    });
+  };
+
+  const fullPreparationSteps = () => {
+    const steps = [];
+
+    if (base) {
+      steps.push({
+        action: {
+          type: "base",
+          base,
+        },
+        label: `Pouring ${base.toLowerCase()} water.`,
+        duration: ACTION_DURATION.base,
+        gap: 240,
+      });
     }
 
-    /*
-     * Never overlap preparation actions.
-     * Wait until the current action has completely finished,
-     * then allow a short visual pause before stirring.
-     */
-    const currentDuration = ACTION_DURATION[afterType] || 1200;
-    const settleDelay = currentDuration + 420;
+    if (flavourData) {
+      steps.push({
+        action: {
+          type: "flavour",
+          flavour,
+        },
+        label: `Adding ${flavour}.`,
+        duration: ACTION_DURATION.flavour,
+        gap: 220,
+      });
+    }
 
-    finishTimerRef.current = setTimeout(() => {
-      runAction({ type: "stir" }, "Bringing your ritual together.");
+    boosts.forEach((boostName) => {
+      steps.push({
+        action: {
+          type: "boost",
+          boost: boostName,
+        },
+        label: `Adding ${boostName}.`,
+        duration: ACTION_DURATION.boost,
+        gap: 170,
+      });
+    });
 
-      serveTimerRef.current = setTimeout(() => {
-        runAction({ type: "serve" }, "Your Water House ritual is ready.");
-      }, ACTION_DURATION.stir + 220);
-    }, settleDelay);
+    return steps;
+  };
+
+  const replayPreparation = () => {
+    if (!hasBase) return;
+
+    setReplayNonce((value) => value + 1);
+
+    queuePreparation(fullPreparationSteps(), {
+      includeFinish: hasFlavour,
+    });
   };
 
   useEffect(() => {
     const previousBase = previousBaseRef.current;
-
     previousBaseRef.current = base;
 
     if (previousBase === base) {
       return;
     }
 
-    clearTimers();
+    clearPreparationTimers();
 
     if (!base) {
       setAction(null);
@@ -475,49 +547,93 @@ export default function DrinkBuilderAnimation({
       return;
     }
 
-    runAction(
+    const steps = [
       {
-        type: "base",
-        base,
+        action: {
+          type: "base",
+          base,
+        },
+        label: `Pouring ${base.toLowerCase()} water.`,
+        duration: ACTION_DURATION.base,
+        gap: 220,
       },
-      `Pouring ${base.toLowerCase()} water.`,
-    );
+    ];
+
+    if (flavourData) {
+      steps.push({
+        action: {
+          type: "flavour",
+          flavour,
+        },
+        label: `Adding ${flavour}.`,
+        duration: ACTION_DURATION.flavour,
+        gap: 190,
+      });
+
+      boosts.forEach((boostName) => {
+        steps.push({
+          action: {
+            type: "boost",
+            boost: boostName,
+          },
+          label: `Adding ${boostName}.`,
+          duration: ACTION_DURATION.boost,
+          gap: 150,
+        });
+      });
+    }
+
+    queuePreparation(steps, {
+      includeFinish: Boolean(flavourData),
+      clearExisting: false,
+    });
   }, [base]);
 
   useEffect(() => {
     const previousFlavour = previousFlavourRef.current;
-
     previousFlavourRef.current = flavour;
 
     if (previousFlavour === flavour) {
       return;
     }
 
-    if (finishTimerRef.current) {
-      clearTimeout(finishTimerRef.current);
-    }
+    clearPreparationTimers();
 
-    if (serveTimerRef.current) {
-      clearTimeout(serveTimerRef.current);
-    }
-
-    if (!flavour) {
+    if (!flavourData) {
+      setAction(null);
       setIsFinished(false);
-
       setStoryLabel(hasBase ? "Choose your flavour." : "Choose your water.");
-
       return;
     }
 
-    runAction(
+    const steps = [
       {
-        type: "flavour",
-        flavour,
+        action: {
+          type: "flavour",
+          flavour,
+        },
+        label: `Adding ${flavour}.`,
+        duration: ACTION_DURATION.flavour,
+        gap: 190,
       },
-      `Adding ${flavour}.`,
-    );
+    ];
 
-    scheduleFinish("flavour");
+    boosts.forEach((boostName) => {
+      steps.push({
+        action: {
+          type: "boost",
+          boost: boostName,
+        },
+        label: `Adding ${boostName}.`,
+        duration: ACTION_DURATION.boost,
+        gap: 150,
+      });
+    });
+
+    queuePreparation(steps, {
+      includeFinish: true,
+      clearExisting: false,
+    });
   }, [flavour]);
 
   const boostsKey = boosts.join("|");
@@ -525,45 +641,52 @@ export default function DrinkBuilderAnimation({
   useEffect(() => {
     const previousBoosts = previousBoostsRef.current || [];
 
-    const added = boosts.find((boost) => !previousBoosts.includes(boost));
+    const addedBoosts = boosts.filter(
+      (boostName) => !previousBoosts.includes(boostName),
+    );
 
-    const removed = previousBoosts.find((boost) => !boosts.includes(boost));
+    const removedBoosts = previousBoosts.filter(
+      (boostName) => !boosts.includes(boostName),
+    );
 
     previousBoostsRef.current = [...boosts];
 
-    if (!added && !removed) {
+    if (!addedBoosts.length && !removedBoosts.length) {
       return;
     }
 
-    if (finishTimerRef.current) {
-      clearTimeout(finishTimerRef.current);
-    }
+    clearPreparationTimers();
 
-    if (serveTimerRef.current) {
-      clearTimeout(serveTimerRef.current);
-    }
+    const steps = [];
 
-    if (added) {
-      runAction(
-        {
-          type: "boost",
-          boost: added,
-        },
-        `Adding ${added}.`,
-      );
-    }
-
-    if (removed) {
-      runAction(
-        {
+    removedBoosts.forEach((boostName) => {
+      steps.push({
+        action: {
           type: "remove",
-          boost: removed,
+          boost: boostName,
         },
-        `${removed} removed.`,
-      );
-    }
+        label: `${boostName} removed.`,
+        duration: ACTION_DURATION.remove,
+        gap: 120,
+      });
+    });
 
-    scheduleFinish(added ? "boost" : "remove");
+    addedBoosts.forEach((boostName) => {
+      steps.push({
+        action: {
+          type: "boost",
+          boost: boostName,
+        },
+        label: `Adding ${boostName}.`,
+        duration: ACTION_DURATION.boost,
+        gap: 160,
+      });
+    });
+
+    queuePreparation(steps, {
+      includeFinish: hasBase && hasFlavour,
+      clearExisting: false,
+    });
   }, [boostsKey]);
 
   useEffect(() => {
@@ -581,7 +704,7 @@ export default function DrinkBuilderAnimation({
 
   useEffect(() => {
     return () => {
-      clearTimers();
+      clearPreparationTimers();
     };
   }, []);
 
@@ -625,22 +748,10 @@ export default function DrinkBuilderAnimation({
         const cardHeight = card.offsetHeight;
         const maxOffset = Math.max(0, builder.scrollHeight - cardHeight);
 
-        /*
-         * How far the top of the animation column has travelled
-         * above our desired viewport position.
-         */
         const desiredOffset = headerOffset - slotRect.top;
 
-        /*
-         * Only begin following after the user reaches the card.
-         * Stop at the bottom of the builder.
-         */
         const nextOffset = Math.min(maxOffset, Math.max(0, desiredOffset));
 
-        /*
-         * Also prevent the card from escaping past the bottom
-         * edge of the builder when the builder itself ends.
-         */
         const bottomLimitedOffset = Math.min(
           nextOffset,
           Math.max(0, builderRect.bottom - slotRect.bottom + maxOffset),
@@ -686,56 +797,19 @@ export default function DrinkBuilderAnimation({
     };
   }, []);
 
-  const replayPreparation = () => {
-    if (!hasBase) return;
+  const statusText = useMemo(() => {
+    if (isFinished) return "READY";
+    if (!action) return "BUILD";
 
-    clearTimers();
-    setIsFinished(false);
+    if (action.type === "base") return "POURING WATER";
+    if (action.type === "flavour") return "ADDING FLAVOUR";
+    if (action.type === "boost") return "ADDING FUNCTION";
+    if (action.type === "remove") return "UPDATING";
+    if (action.type === "stir") return "MIXING";
+    if (action.type === "serve") return "SERVING";
 
-    setReplayNonce((value) => value + 1);
-
-    runAction(
-      {
-        type: "base",
-        base,
-      },
-      `Pouring ${base.toLowerCase()} water.`,
-    );
-
-    if (!hasFlavour) return;
-
-    finishTimerRef.current = setTimeout(() => {
-      runAction(
-        {
-          type: "flavour",
-          flavour,
-        },
-        `Adding ${flavour}.`,
-      );
-
-      serveTimerRef.current = setTimeout(() => {
-        const selectedBoost = boosts[0];
-
-        if (selectedBoost) {
-          runAction(
-            {
-              type: "boost",
-              boost: selectedBoost,
-            },
-            `Adding ${selectedBoost}.`,
-          );
-
-          setTimeout(() => {
-            scheduleFinish("boost");
-          }, ACTION_DURATION.boost + 120);
-
-          return;
-        }
-
-        scheduleFinish("flavour");
-      }, ACTION_DURATION.flavour + 180);
-    }, ACTION_DURATION.base + 220);
-  };
+    return "MAKING";
+  }, [action, isFinished]);
 
   const progress = useMemo(() => {
     if (!hasBase) return 0;
@@ -776,7 +850,11 @@ export default function DrinkBuilderAnimation({
             hasFlavour ? `wh-live-tone-${flavourData.tone}` : "",
             !hasBase ? "wh-live-scene-empty" : "",
             action ? `wh-story-${action.type}` : "",
-            isFinished ? "wh-story-finished" : "",
+            action?.type === "base" ? "wh-liquid-is-pouring" : "",
+            action?.type === "flavour" ? "wh-liquid-is-flavouring" : "",
+            action?.type === "stir" ? "wh-liquid-is-mixing" : "",
+            action?.type === "serve" ? "wh-liquid-is-serving" : "",
+            isFinished ? "wh-story-finished wh-liquid-is-ready" : "",
           ]
             .filter(Boolean)
             .join(" ")}
@@ -906,6 +984,12 @@ export default function DrinkBuilderAnimation({
                             "wh-cup-piece",
                             `wh-cup-piece-${index + 1}`,
                             `wh-cup-piece-${ingredient.type}`,
+                            `wh-motion-${ingredient.type}`,
+                            index % 3 === 0
+                              ? "wh-depth-back"
+                              : index % 3 === 1
+                                ? "wh-depth-mid"
+                                : "wh-depth-front",
                           ].join(" ")}
                         >
                           <IngredientShape type={ingredient.type} />
@@ -918,10 +1002,7 @@ export default function DrinkBuilderAnimation({
                     <>
                       <div className="wh-function-cloud" aria-hidden="true">
                         {Array.from({ length: 18 }).map((_, index) => (
-                          <span
-                            key={`cloud-${index}`}
-                            style={{ "--cloud-index": index }}
-                          />
+                          <span key={`cloud-${index}`} />
                         ))}
                       </div>
 
@@ -946,6 +1027,7 @@ export default function DrinkBuilderAnimation({
 
               <div className="wh-cup-reflection wh-cup-reflection-one" />
               <div className="wh-cup-reflection wh-cup-reflection-two" />
+              <div className="wh-cup-highlight-sweep" aria-hidden="true" />
 
               <div className="wh-cup-logo">
                 <img
@@ -965,9 +1047,7 @@ export default function DrinkBuilderAnimation({
             <div className="wh-bartender-story-top">
               <span>WATER HOUSE BAR</span>
 
-              <strong>
-                {isFinished ? "READY" : action ? "MAKING" : "BUILD"}
-              </strong>
+              <strong>{statusText}</strong>
             </div>
 
             <p>{storyLabel}</p>
@@ -1026,8 +1106,8 @@ export default function DrinkBuilderAnimation({
           </div>
         )}
 
-        {hasFlavour && (
-          <div className="wh-final-recipe-card">
+        {hasFlavour && isFinished && (
+          <div className="wh-final-recipe-card wh-final-recipe-card-ready">
             <div className="wh-final-recipe-copy">
               <small>YOUR WATER</small>
               <strong>

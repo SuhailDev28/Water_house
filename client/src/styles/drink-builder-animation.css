@@ -8219,3 +8219,641 @@ background 0.2s ease;
     animation-iteration-count: 1 !important;
   }
 }
+
+/* =========================================================
+   WATER HOUSE â€” PREMIUM PREPARATION ENGINE V2
+   Liquid rise / flavour infusion / depth / sequential story
+========================================================= */
+
+/* ---------------------------------------------------------
+   LIQUID PHYSICS
+--------------------------------------------------------- */
+
+.wh-drink-liquid {
+  transform-origin: center bottom;
+  will-change: height, transform, filter, opacity;
+}
+
+.wh-liquid-is-pouring .wh-drink-liquid {
+  animation:
+    wh-liquid-fill-up
+    1.3s
+    cubic-bezier(0.18, 0.82, 0.32, 1)
+    both;
+}
+
+@keyframes wh-liquid-fill-up {
+  0% {
+    height: 4%;
+    opacity: 0.4;
+  }
+
+  20% {
+    height: 15%;
+    opacity: 0.68;
+  }
+
+  72% {
+    height: 72%;
+    opacity: 0.82;
+  }
+
+  100% {
+    height: 79%;
+    opacity: 0.82;
+  }
+}
+
+/*
+ * Gradual flavour infusion.
+ * The base gradient is already selected by React; this layer makes
+ * the visual change feel like colour is spreading through the water.
+ */
+.wh-drink-liquid::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 6;
+
+  pointer-events: none;
+
+  opacity: 0.22;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--wh-flavour-top, rgba(255,255,255,0)),
+      var(--wh-flavour-bottom, rgba(255,255,255,0))
+    );
+
+  mix-blend-mode: multiply;
+
+  transition:
+    opacity 0.7s ease;
+}
+
+.wh-live-tone-peach {
+  --wh-flavour-top: rgba(248, 199, 160, 0.52);
+  --wh-flavour-bottom: rgba(232, 143, 109, 0.66);
+}
+
+.wh-live-tone-strawberry {
+  --wh-flavour-top: rgba(244, 167, 162, 0.48);
+  --wh-flavour-bottom: rgba(214, 94, 91, 0.63);
+}
+
+.wh-live-tone-yuzu {
+  --wh-flavour-top: rgba(239, 227, 119, 0.44);
+  --wh-flavour-bottom: rgba(203, 206, 92, 0.56);
+}
+
+.wh-live-tone-cucumber {
+  --wh-flavour-top: rgba(197, 224, 164, 0.4);
+  --wh-flavour-bottom: rgba(132, 185, 116, 0.52);
+}
+
+.wh-live-tone-grape {
+  --wh-flavour-top: rgba(210, 226, 145, 0.42);
+  --wh-flavour-bottom: rgba(160, 193, 101, 0.55);
+}
+
+.wh-live-tone-pandan {
+  --wh-flavour-top: rgba(219, 224, 185, 0.42);
+  --wh-flavour-bottom: rgba(148, 179, 128, 0.55);
+}
+
+.wh-liquid-is-flavouring .wh-drink-liquid::after {
+  animation:
+    wh-flavour-bloom
+    1.3s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+@keyframes wh-flavour-bloom {
+  0% {
+    opacity: 0;
+    transform: translateY(38%) scaleY(0.45);
+    filter: blur(7px);
+  }
+
+  45% {
+    opacity: 0.5;
+    transform: translateY(14%) scaleY(0.8);
+    filter: blur(4px);
+  }
+
+  100% {
+    opacity: 0.24;
+    transform: translateY(0) scaleY(1);
+    filter: blur(0);
+  }
+}
+
+/* Surface responds to preparation */
+.wh-liquid-is-pouring .wh-drink-surface {
+  animation:
+    wh-surface-pour-reaction
+    0.44s
+    ease-in-out
+    infinite alternate;
+}
+
+.wh-liquid-is-flavouring .wh-drink-surface {
+  animation:
+    wh-surface-drop-reaction
+    0.72s
+    ease-out
+    both;
+}
+
+.wh-liquid-is-mixing .wh-drink-surface {
+  animation:
+    wh-surface-stir
+    0.55s
+    ease-in-out
+    infinite;
+}
+
+@keyframes wh-surface-pour-reaction {
+  from {
+    transform: translateX(-4%) rotate(-2deg) scaleX(0.96);
+  }
+
+  to {
+    transform: translateX(4%) rotate(2deg) scaleX(1.04);
+  }
+}
+
+@keyframes wh-surface-drop-reaction {
+  0% {
+    transform: scaleX(1);
+  }
+
+  35% {
+    transform: scaleX(1.13) translateY(3px);
+  }
+
+  70% {
+    transform: scaleX(0.96) translateY(-1px);
+  }
+
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes wh-surface-stir {
+  0%,
+  100% {
+    transform: translateX(-3%) rotate(-1deg) scaleX(0.96);
+  }
+
+  50% {
+    transform: translateX(3%) rotate(1deg) scaleX(1.06);
+  }
+}
+
+/* ---------------------------------------------------------
+   INGREDIENT DEPTH
+--------------------------------------------------------- */
+
+.wh-depth-back {
+  z-index: 9 !important;
+  opacity: 0.56;
+  filter:
+    blur(0.7px)
+    saturate(0.86);
+}
+
+.wh-depth-mid {
+  z-index: 17 !important;
+  opacity: 0.78;
+  filter:
+    blur(0.15px)
+    saturate(0.95);
+}
+
+.wh-depth-front {
+  z-index: 24 !important;
+  opacity: 0.96;
+  filter:
+    saturate(1.06)
+    contrast(1.02);
+}
+
+/* ---------------------------------------------------------
+   FLAVOUR-SPECIFIC MOTION
+--------------------------------------------------------- */
+
+.wh-motion-peach {
+  animation:
+    wh-peach-tumble
+    6.4s
+    ease-in-out
+    infinite !important;
+}
+
+.wh-motion-strawberry {
+  animation:
+    wh-strawberry-roll
+    6.8s
+    ease-in-out
+    infinite !important;
+}
+
+.wh-motion-citrus,
+.wh-motion-lime,
+.wh-motion-cucumber {
+  animation:
+    wh-citrus-wall-slide
+    7.4s
+    ease-in-out
+    infinite !important;
+}
+
+.wh-motion-mint,
+.wh-motion-pandan {
+  animation:
+    wh-leaf-sway
+    5.9s
+    ease-in-out
+    infinite !important;
+}
+
+.wh-motion-grape {
+  animation:
+    wh-grape-heavy-bob
+    7.1s
+    ease-in-out
+    infinite !important;
+}
+
+.wh-motion-coconut-piece {
+  animation:
+    wh-coconut-drift
+    7.5s
+    ease-in-out
+    infinite !important;
+}
+
+@keyframes wh-peach-tumble {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+
+  48% {
+    transform: translateY(-9px) translateX(3px) rotate(9deg);
+  }
+}
+
+@keyframes wh-strawberry-roll {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-7deg);
+  }
+
+  50% {
+    transform: translateY(-8px) translateX(-3px) rotate(13deg);
+  }
+}
+
+@keyframes wh-citrus-wall-slide {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(4deg);
+  }
+}
+
+@keyframes wh-leaf-sway {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  35% {
+    transform: translateY(-7px) rotate(5deg);
+  }
+
+  70% {
+    transform: translateY(-3px) rotate(-6deg);
+  }
+}
+
+@keyframes wh-grape-heavy-bob {
+  0%,
+  100% {
+    transform: translateY(2px) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-5px) rotate(3deg);
+  }
+}
+
+@keyframes wh-coconut-drift {
+  0%,
+  100% {
+    transform: translateY(1px) translateX(0) rotate(-7deg);
+  }
+
+  50% {
+    transform: translateY(-8px) translateX(4px) rotate(4deg);
+  }
+}
+
+/* Stir the whole recipe once after all additions */
+.wh-liquid-is-mixing .wh-cup-ingredients {
+  animation:
+    wh-recipe-stir
+    1.05s
+    cubic-bezier(0.45, 0.05, 0.55, 0.95)
+    both;
+}
+
+.wh-liquid-is-mixing .wh-cup-ice {
+  animation:
+    wh-ice-stir
+    1.05s
+    ease-in-out
+    both;
+}
+
+@keyframes wh-recipe-stir {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  30% {
+    transform: translateX(7px) rotate(3deg);
+  }
+
+  62% {
+    transform: translateX(-7px) rotate(-3deg);
+  }
+}
+
+@keyframes wh-ice-stir {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  35% {
+    transform: translateY(4px) rotate(2deg);
+  }
+
+  70% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+}
+
+/* ---------------------------------------------------------
+   FUNCTION DISSOLVE â€” ACTIVE THEN SETTLED
+--------------------------------------------------------- */
+
+.wh-story-boost .wh-function-cloud {
+  opacity: 1;
+
+  animation:
+    wh-function-cloud-activate
+    1.15s
+    ease-out
+    both;
+}
+
+.wh-liquid-is-mixing .wh-function-cloud {
+  animation:
+    wh-function-cloud-mix
+    1.05s
+    ease-in-out
+    both;
+}
+
+.wh-story-finished .wh-function-cloud {
+  opacity: 0.12;
+  transition: opacity 0.8s ease;
+}
+
+@keyframes wh-function-cloud-activate {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+  }
+
+  45% {
+    opacity: 0.78;
+    filter: blur(2px);
+  }
+
+  100% {
+    opacity: 0.42;
+    filter: blur(1px);
+  }
+}
+
+@keyframes wh-function-cloud-mix {
+  0% {
+    opacity: 0.48;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 0.16;
+    transform: scale(1);
+  }
+}
+
+/* ---------------------------------------------------------
+   PREMIUM FINAL SERVE
+--------------------------------------------------------- */
+
+.wh-cup-highlight-sweep {
+  position: absolute;
+
+  z-index: 64;
+
+  top: 16px;
+  bottom: 16px;
+  left: -70%;
+
+  width: 46%;
+
+  transform:
+    skewX(-13deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.38),
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+
+  filter: blur(1px);
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.wh-liquid-is-serving .wh-cup-highlight-sweep,
+.wh-liquid-is-ready .wh-cup-highlight-sweep {
+  animation:
+    wh-cup-highlight-pass
+    1.15s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+@keyframes wh-cup-highlight-pass {
+  0% {
+    left: -70%;
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 0.85;
+  }
+
+  72% {
+    opacity: 0.5;
+  }
+
+  100% {
+    left: 130%;
+    opacity: 0;
+  }
+}
+
+.wh-story-finished .wh-water-house-cup {
+  box-shadow:
+    inset 7px 0 13px rgba(255, 255, 255, 0.38),
+    inset -7px 0 14px rgba(88, 58, 43, 0.04),
+    0 29px 44px rgba(67, 40, 29, 0.12);
+}
+
+/* Base thickness closer to real takeaway cup */
+.wh-water-house-cup::after {
+  content: "";
+
+  position: absolute;
+
+  z-index: 58;
+
+  left: 12px;
+  right: 12px;
+  bottom: 5px;
+
+  height: 8px;
+
+  border-radius: 50%;
+
+  border-bottom:
+    2px solid
+    rgba(255, 255, 255, 0.44);
+
+  box-shadow:
+    0 3px 4px
+    rgba(74, 48, 37, 0.05);
+
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   LIVE PREPARATION STATUS
+--------------------------------------------------------- */
+
+.wh-bartender-story-top strong {
+  min-width: 70px;
+
+  text-align: center;
+
+  transition:
+    min-width 0.25s ease,
+    background 0.25s ease;
+}
+
+.wh-story-base .wh-bartender-story-top strong,
+.wh-story-flavour .wh-bartender-story-top strong,
+.wh-story-boost .wh-bartender-story-top strong,
+.wh-story-stir .wh-bartender-story-top strong {
+  background:
+    rgba(104, 31, 25, 0.12);
+}
+
+/* ---------------------------------------------------------
+   READY RECIPE CARD
+--------------------------------------------------------- */
+
+.wh-final-recipe-card-ready {
+  animation:
+    wh-final-recipe-enter
+    0.55s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+@keyframes wh-final-recipe-enter {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE / REDUCED MOTION
+--------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .wh-depth-back {
+    filter: none;
+    opacity: 0.62;
+  }
+
+  .wh-bartender-story-top strong {
+    min-width: 58px;
+    font-size: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wh-liquid-is-pouring .wh-drink-liquid,
+  .wh-liquid-is-flavouring .wh-drink-liquid::after,
+  .wh-liquid-is-mixing .wh-cup-ingredients,
+  .wh-liquid-is-mixing .wh-cup-ice,
+  .wh-motion-peach,
+  .wh-motion-strawberry,
+  .wh-motion-citrus,
+  .wh-motion-lime,
+  .wh-motion-cucumber,
+  .wh-motion-mint,
+  .wh-motion-pandan,
+  .wh-motion-grape,
+  .wh-motion-coconut-piece,
+  .wh-cup-highlight-sweep,
+  .wh-final-recipe-card-ready {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
